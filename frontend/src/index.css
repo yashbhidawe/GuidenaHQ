@@ -4,13 +4,25 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --color-deep-teal: #1a5c6a; /* Main headers, buttons, navigation */
-  --color-warm-coral: #ff6f61; /* Call-to-action buttons, notifications */
-  --color-soft-gold: #f4c430; /* Badges, progress visuals */
-  --color-off-white: #f8fafc; /* Backgrounds */
-  --color-slate-gray: #4a5568; /* Body text, secondary elements */
-  --color-sage-green: #a8d5ba; /* Success notifications, progress bars */
-  --color-muted-red: #e57373; /* Error messages, warnings */
+  /* Primary colors */
+  --color-deep-teal: #0d5266; /* Slightly darker teal for better contrast - headers, primary buttons */
+  --color-medium-teal: #1a7d90; /* Secondary teal for hover states and variations */
+  --color-light-teal: #7ab9c9; /* Tertiary teal for backgrounds, highlights */
+
+  /* Accent colors */
+  --color-warm-coral: #e8584a; /* Darker coral for better accessibility - primary CTAs */
+  --color-soft-gold: #e9b92b; /* Slightly toned down gold - achievements, highlights */
+
+  /* Neutral colors */
+  --color-off-white: #f8fafc; /* Background */
+  --color-light-gray: #e2e8f0; /* Dividers, borders */
+  --color-slate-gray: #3a4454; /* Primary text - darker for better readability */
+  --color-medium-gray: #6b7280; /* Secondary text */
+
+  /* Functional colors */
+  --color-sage-green: #4caf93; /* Success states - darker for better visibility */
+  --color-muted-red: #d64545; /* Error states - slightly darker */
+  --color-pale-blue: #b3e5fc; /* Info states */
 }
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
