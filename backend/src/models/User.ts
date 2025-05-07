@@ -9,7 +9,7 @@ export interface UserInterface extends Document {
   lastName?: string;
   email: string;
   password: string;
-  role: "mentor" | "mentee";
+  role: "mentor" | "mentee" | "both";
   exprience: string;
   skillsOffered?: string[];
   skillsWanted?: string[];
@@ -43,7 +43,8 @@ const userSchema = new Schema<UserInterface>(
     },
     role: {
       type: String,
-      enum: ["mentor", "mentee"],
+      enum: ["mentor", "mentee", "both"],
+      default: "mentee",
       required: true,
     },
     exprience: {
