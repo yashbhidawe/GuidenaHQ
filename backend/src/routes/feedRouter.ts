@@ -15,7 +15,7 @@ feedRouter.get(
         return;
       }
       const teachersFeed = await User.find({
-        role: { $in: ["mentee"] },
+        role: { $in: ["mentee", "both"] },
         skillsWanted: { $in: loggedInUser.skillsOffered },
         _id: { $ne: loggedInUser._id },
       }).select("-password");
@@ -60,6 +60,56 @@ feedRouter.get(
       res.status(200).json({
         message: "teachers who can help you",
         data: learnersFeed,
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "cannot get feed";
+      res.status(401).json({ message: errorMessage });
+    }
+  }
+);
+
+// New endpoint for "both" role users
+feedRouter.get(
+  "/both",
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const loggedInUser = req.user as UserInterface;
+      if (!loggedInUser) {
+        res.status(401).json({ message: "Unauthorized" });
+        return;
+      }
+
+      // Find potential mentors (for me to learn from)
+      const potentialMentors = await User.find({
+        role: { $in: ["mentor", "both"] },
+        skillsOffered: { $in: loggedInUser.skillsWanted },
+        _id: { $ne: loggedInUser._id },
+      }).select("-password");
+
+      // Find potential mentees (for me to teach)
+      const potentialMentees = await User.find({
+        role: { $in: ["mentee", "both"] },
+        skillsWanted: { $in: loggedInUser.skillsOffered },
+        _id: { $ne: loggedInUser._id },
+      }).select("-password");
+
+      // Combine and tag the results
+      const combinedFeed = {
+        mentors: potentialMentors.map((user) => ({
+          ...user.toObject(),
+          relationshipType: "mentor", // This user can mentor you
+        })),
+        mentees: potentialMentees.map((user) => ({
+          ...user.toObject(),
+          relationshipType: "mentee",
+        })),
+      };
+
+      res.status(200).json({
+        message: "Your personalized feed for mentoring and learning",
+        data: combinedFeed,
       });
     } catch (error) {
       const errorMessage =

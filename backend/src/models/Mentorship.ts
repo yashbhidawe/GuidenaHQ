@@ -15,7 +15,13 @@ const mentorshipSchema = new Schema<MentorshipInterface>(
   {
     mentee: { type: Schema.Types.ObjectId, ref: "User", required: true },
     mentor: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    pitchMessage: { type: String, required: true, maxlength: 500 },
+    pitchMessage: {
+      type: String,
+      required: true,
+      maxlength: 500,
+      default:
+        "Hey there! How is it going, I would love to menotor you/get mentored by you! thanks.",
+    },
     status: {
       type: String,
       enum: ["pending", "accepted", "rejected", "terminated"],

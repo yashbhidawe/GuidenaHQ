@@ -19,18 +19,18 @@ mentroshipRouter.post(
       const mentorId = req.params.mentor;
 
       const pitchMessage = req.body.pitchMessage;
-      if (!pitchMessage) {
-        res.status(400).json({
-          message: "please provide a pitch message",
-        });
-        return;
-      }
-      if (pitchMessage.length > 500) {
-        res.status(400).json({
-          message: "pitch message should be less than 500 characters",
-        });
-        return;
-      }
+      // if (!pitchMessage) {
+      //   res.status(400).json({
+      //     message: "please provide a pitch message",
+      //   });
+      //   return;
+      // }
+      // if (pitchMessage.length > 500) {
+      //   res.status(400).json({
+      //     message: "pitch message should be less than 500 characters",
+      //   });
+      //   return;
+      // }
 
       const mentor = await User.findById(mentorId);
       if (!mentor) {
@@ -65,6 +65,7 @@ mentroshipRouter.post(
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Something went wrong";
+      console.log(errorMessage);
       res.status(401).json({ message: errorMessage });
     }
   }
