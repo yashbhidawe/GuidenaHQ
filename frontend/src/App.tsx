@@ -6,6 +6,7 @@ import { ToastContainer, Bounce } from "react-toastify";
 import { Provider } from "react-redux";
 import { appStore } from "./store/appStore";
 import Requests from "./pages/Requests";
+import Profile from "./pages/Profile";
 
 const AppRouters = () => {
   return (
@@ -15,6 +16,7 @@ const AppRouters = () => {
           <Route index element={<Feed />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/requests" element={<Requests />} />
+          <Route path="/profile/:userID" element={<Profile />} />
         </Route>
       </Routes>
 
