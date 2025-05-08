@@ -6,7 +6,6 @@ export interface MentorshipInterface extends Document {
   pitchMessage: string;
   status: "pending" | "accepted" | "rejected" | "terminated";
   isActive: boolean;
-  rating: number;
   feedback: string;
   createdAt: Date;
 }
@@ -28,7 +27,6 @@ const mentorshipSchema = new Schema<MentorshipInterface>(
       default: "pending",
     },
     isActive: { type: Boolean, default: true },
-    rating: { type: Number, default: 0 },
     feedback: { type: String, default: "", maxlength: 500 },
   },
   { timestamps: true }
