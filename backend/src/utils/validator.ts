@@ -1,6 +1,7 @@
 import validator from "validator";
 import bcrypt from "bcrypt";
 import { Request } from "express";
+import { AuthenticatedRequest } from "../middleware/auth";
 
 export const validateSignupData = (req: Request) => {
   const { firstName, lastName, email, role, password } = req.body;
@@ -21,11 +22,12 @@ export const validateSignupData = (req: Request) => {
   }
 };
 
-export const validateEditProfileData = (req) => {
+export const validateEditProfileData = (req: AuthenticatedRequest) => {
   const allowedEdits = [
     "firstName",
     "lastName",
-    "avtar",
+    "avatar",
+    "experience",
     "skillsOffered",
     "skillsWanted",
     "bio",
