@@ -15,6 +15,7 @@ export interface UserInterface extends Document {
   skillsWanted?: string[];
   bio?: string;
   avatar?: string;
+  userRating?: number;
   getJWT(): string;
 }
 
@@ -57,6 +58,7 @@ const userSchema = new Schema<UserInterface>(
       type: String,
       default: "https://avatar.iran.liara.run/public/boy?username=Ash",
     },
+    userRating: { type: Number, default: 0 },
   },
   {
     timestamps: true,

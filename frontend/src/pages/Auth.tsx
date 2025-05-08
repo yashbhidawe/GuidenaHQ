@@ -192,65 +192,6 @@ const Auth = () => {
                 className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
               />
             </div>
-            <div className="space-y-2">
-              <label
-                htmlFor="signup-role"
-                className="block text-slate-700 font-medium"
-              >
-                I want to join as a
-              </label>
-              <div className="mt-4 space-y-1">
-                <div className="relative">
-                  <select
-                    id="role-select"
-                    name="role"
-                    value={signUpFormData.role}
-                    onChange={(e) =>
-                      setSignUpFormData({
-                        ...signUpFormData,
-                        role: e.target.value,
-                      })
-                    }
-                    className="block w-full appearance-none rounded-md border border-gray-300 bg-white py-2 pl-3 pr-10 shadow-sm focus:border-teal-600 focus:outline-none focus:ring-1 focus:ring-teal-500 text-gray-700"
-                  >
-                    <option value="mentee">Mentee</option>
-                    <option value="mentor">Mentor</option>
-                    <option value="both">Both (Mentor & Mentee)</option>
-                  </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-teal-600">
-                    <svg
-                      className="h-5 w-5"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                </div>
-                {signUpFormData.role === "mentee" && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    As a mentee, you'll be matched with experienced
-                    professionals who can guide your growth.
-                  </p>
-                )}
-                {signUpFormData.role === "mentor" && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    As a mentor, you'll share your expertise and help others
-                    develop their skills.
-                  </p>
-                )}
-                {signUpFormData.role === "both" && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    You'll have access to both find mentors and mentor others on
-                    our platform.
-                  </p>
-                )}
-              </div>
-            </div>
 
             <div className="space-y-2">
               <label
