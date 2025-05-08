@@ -2,7 +2,7 @@ import { BASE_URL } from "@/utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import FeedCard from "./FeedCard";
+import FeedCard from "../components/FeedCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/appStore";
@@ -29,7 +29,7 @@ const Feed = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const userRole = currentUser?.role || "mentee";
+  const userRole = currentUser?.role || "both";
 
   const getFeed = async () => {
     try {
@@ -74,83 +74,8 @@ const Feed = () => {
     );
   }
 
-  if (userRole === "mentee") {
-    if (mentorUsers.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center p-8 text-center min-h-[400px]">
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">
-            No mentors found
-          </h3>
-          <p className="text-gray-500">
-            We couldn't find any mentors matching your skill interests at the
-            moment.
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          People Who Can Mentor You
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {mentorUsers.map((user) => (
-            <FeedCard
-              _id={user._id}
-              key={user._id}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              experience={user.experience}
-              skillsOffered={user.skillsOffered}
-              skillsWanted={user.skillsWanted}
-              avatar={user.avatar}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  if (userRole === "mentor") {
-    if (menteeUsers.length === 0) {
-      return (
-        <div className="flex flex-col items-center justify-center p-8 text-center min-h-[400px]">
-          <h3 className="text-xl font-semibold text-gray-700 mb-2">
-            No mentees found
-          </h3>
-          <p className="text-gray-500">
-            We couldn't find any mentees who need your skills at the moment.
-          </p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="space-y-6">
-        <h2 className="text-2xl font-semibold text-gray-800">
-          People You Can Mentor
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {menteeUsers.map((user) => (
-            <FeedCard
-              _id={user._id}
-              key={user._id}
-              firstName={user.firstName}
-              lastName={user.lastName}
-              experience={user.experience}
-              skillsOffered={user.skillsOffered}
-              skillsWanted={user.skillsWanted}
-              avatar={user.avatar}
-            />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 ">
       <Tabs defaultValue="mentors" className="w-full">
         <TabsList className="grid w-full md:w-80 grid-cols-2">
           <TabsTrigger value="mentors">Find Mentors</TabsTrigger>

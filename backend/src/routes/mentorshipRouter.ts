@@ -4,9 +4,9 @@ import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { User } from "../models/User";
 import mongoose from "mongoose";
 
-const mentroshipRouter = express.Router();
-//send route
-mentroshipRouter.post(
+const mentorshipRouter = express.Router();
+//send route specific for feed page
+mentorshipRouter.post(
   "/mentorship/request/send/:mentor",
   authMiddleware,
   async (req: AuthenticatedRequest, res) => {
@@ -19,18 +19,18 @@ mentroshipRouter.post(
       const mentorId = req.params.mentor;
 
       const pitchMessage = req.body.pitchMessage;
-      // if (!pitchMessage) {
-      //   res.status(400).json({
-      //     message: "please provide a pitch message",
-      //   });
-      //   return;
-      // }
-      // if (pitchMessage.length > 500) {
-      //   res.status(400).json({
-      //     message: "pitch message should be less than 500 characters",
-      //   });
-      //   return;
-      // }
+      if (!pitchMessage) {
+        res.status(400).json({
+          message: "please provide a pitch message",
+        });
+        return;
+      }
+      if (pitchMessage.length > 500) {
+        res.status(400).json({
+          message: "pitch message should be less than 500 characters",
+        });
+        return;
+      }
 
       const mentor = await User.findById(mentorId);
       if (!mentor) {
@@ -70,11 +70,59 @@ mentroshipRouter.post(
     }
   }
 );
-//review route
-mentroshipRouter.post(
-  "mentorship/request/review/:status/:requestId",
+
+//group
+//request recived route  -main
+mentorshipRouter.get(
+  "/mentorship/request/received",
   authMiddleware,
   async (req: AuthenticatedRequest, res) => {
+    try {
+      const loggedInUser = req.user;
+      if (!loggedInUser) {
+        res.status(401).json({
+          message: "Unauthorized",
+        });
+        return;
+      }
+
+      const mentorshipRequests = await mentorshipRequestModel
+        .find({
+          mentor: loggedInUser._id,
+          status: "pending",
+        })
+        .populate(
+          "mentee",
+          "firstName lastName avatar bio skillsWanted experience email "
+        );
+
+      if (!mentorshipRequests) {
+        res.status(404).json({
+          message: "no mentorship request found",
+        });
+        return;
+      }
+
+      res.json({
+        data: mentorshipRequests,
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Request not found";
+      res.status(401).json({ message: errorMessage });
+    }
+  }
+);
+//review route -action
+mentorshipRouter.post(
+  "/mentorship/request/review/:status/:requestId",
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    console.log("Route hit:", {
+      status: req.params.status,
+      requestId: req.params.requestId,
+      user: req.user?._id,
+    });
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -117,50 +165,10 @@ mentroshipRouter.post(
     }
   }
 );
-//request recived route
-mentroshipRouter.get(
-  "/mentorship/request/recived",
-  authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
-    try {
-      const loggedInUser = req.user;
-      if (!loggedInUser) {
-        res.status(401).json({
-          message: "Unauthorized",
-        });
-        return;
-      }
 
-      const mentorshipRequests = await mentorshipRequestModel
-        .find({
-          mentor: loggedInUser._id,
-          status: "pending",
-        })
-        .populate(
-          "mentee",
-          "firstName lastName avatar bio skillsWanted experience email "
-        );
-
-      if (!mentorshipRequests) {
-        res.status(404).json({
-          message: "no mentorship request found",
-        });
-        return;
-      }
-
-      res.json({
-        data: mentorshipRequests,
-      });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Request not found";
-      res.status(401).json({ message: errorMessage });
-    }
-  }
-);
-
-// mentroship request sent route
-mentroshipRouter.get(
+//group
+// mentorship request sent route -main
+mentorshipRouter.get(
   "/mentorship/request/sent",
   authMiddleware,
   async (req: AuthenticatedRequest, res) => {
@@ -200,9 +208,48 @@ mentroshipRouter.get(
     }
   }
 );
-//get all connections route
-mentroshipRouter.get(
-  "/mentroship/connections",
+//revoke a sent request -action
+mentorshipRouter.delete(
+  "/mentorship/request/revoke/:requestId",
+  authMiddleware,
+  async (req: AuthenticatedRequest, res) => {
+    try {
+      const loggedInUser = req.user;
+      if (!loggedInUser) {
+        res.status(401).json({
+          message: "Unauthorized",
+        });
+        return;
+      }
+      const requestId = req.params.requestId;
+
+      const mentorshipRequest = await mentorshipRequestModel.findOne({
+        _id: requestId,
+        mentee: loggedInUser._id,
+        status: "pending",
+      });
+      if (!mentorshipRequest) {
+        res.status(404).json({
+          message: "mentorship request not found",
+        });
+        return;
+      }
+      await mentorshipRequest.deleteOne();
+      res.status(200).json({
+        message: "mentorship request revoked successfully",
+      });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "Something went wrong";
+      res.status(401).json({ message: errorMessage });
+    }
+  }
+);
+
+//group
+//get all connections route -main
+mentorshipRouter.get(
+  "/mentorship/connections",
   authMiddleware,
   async (req: AuthenticatedRequest, res) => {
     try {
@@ -240,9 +287,10 @@ mentroshipRouter.get(
         const currentUserId = loggedInUser._id.toString();
 
         if (menteeId === currentUserId) {
-          return row.mentor;
-        } else {
-          return row.mentee;
+          return {
+            connectionId: row._id,
+            user: menteeId === currentUserId ? row.mentor : row.mentee,
+          };
         }
       });
       res.status(200).json({
@@ -255,48 +303,9 @@ mentroshipRouter.get(
     }
   }
 );
-
-//revoke a sent request
-mentroshipRouter.delete(
-  "/mentorship/request/revoke/:requestId",
-  authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
-    try {
-      const loggedInUser = req.user;
-      if (!loggedInUser) {
-        res.status(401).json({
-          message: "Unauthorized",
-        });
-        return;
-      }
-      const requestId = req.params.requestId;
-
-      const mentorshipRequest = await mentorshipRequestModel.findOne({
-        _id: requestId,
-        mentee: loggedInUser._id,
-        status: "pending",
-      });
-      if (!mentorshipRequest) {
-        res.status(404).json({
-          message: "mentorship request not found",
-        });
-        return;
-      }
-      await mentorshipRequest.deleteOne();
-      res.status(200).json({
-        message: "mentorship request revoked successfully",
-      });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error ? error.message : "Something went wrong";
-      res.status(401).json({ message: errorMessage });
-    }
-  }
-);
-
-// Terminate mentorship
-mentroshipRouter.patch(
-  "/mentroship/terminate/:mentorshipId",
+// Terminate mentorship -action
+mentorshipRouter.patch(
+  "/mentorship/terminate/:mentorshipId",
   authMiddleware,
   async (req: AuthenticatedRequest, res) => {
     try {
@@ -336,4 +345,4 @@ mentroshipRouter.patch(
   }
 );
 
-export default mentroshipRouter;
+export default mentorshipRouter;
