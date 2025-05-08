@@ -2,14 +2,13 @@ import Express, { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { validateEditProfileData } from "../utils/validator";
+import { User } from "../models/User";
 const userRouter = Express.Router();
 
 userRouter.get("/profile/:id", async (req: Request, res: Response) => {
   try {
     const userId = req.params.id;
-    const user = await req.app.locals.UserModel.findById(userId).select(
-      "-password"
-    );
+    const user = await User.findById(userId).select("-password");
     if (!user) {
       res.status(404).json({ message: "User not found" });
       return;
