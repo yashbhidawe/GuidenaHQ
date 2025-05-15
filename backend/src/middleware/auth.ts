@@ -13,6 +13,11 @@ const authMiddleware = async (
 ) => {
   try {
     const token = req.cookies?.token;
+
+    // Debug log
+    console.log("Request path:", req.path);
+    console.log("Token exists:", !!token);
+
     if (!token) {
       throw new Error("Token not found");
     }
@@ -23,6 +28,8 @@ const authMiddleware = async (
     }
 
     const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+    console.log("Decoded token user ID:", decoded._id);
+
     const { _id } = decoded;
 
     const user = await User.findById(_id);
@@ -30,9 +37,13 @@ const authMiddleware = async (
       throw new Error("User not found");
     }
 
+    console.log("User found in DB:", user._id);
+    console.log("Current route params:", req.params);
+
     req.user = user;
     next();
   } catch (error) {
+    console.error("Auth middleware error:", error);
     const errorMessage =
       error instanceof Error ? error.message : "Unauthorized";
     res.status(401).json({ message: errorMessage });

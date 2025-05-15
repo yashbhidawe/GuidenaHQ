@@ -30,7 +30,7 @@ const Feed = () => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const currentUser = useSelector((state: RootState) => state.user);
-  const userRole = currentUser?.role || "both";
+  const userRole = currentUser?.data?.role || "both";
 
   const getFeed = async () => {
     try {

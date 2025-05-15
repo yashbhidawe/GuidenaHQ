@@ -1,25 +1,96 @@
-import Express, { Request, Response } from "express";
+import Express, { Response } from "express";
 import bcrypt from "bcrypt";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { validateEditProfileData } from "../utils/validator";
 import { User } from "../models/User";
+import mongoose from "mongoose";
+
 const userRouter = Express.Router();
 
-userRouter.get("/profile/:id", async (req: Request, res: Response) => {
-  try {
-    const userId = req.params.id;
-    const user = await User.findById(userId).select("-password");
-    if (!user) {
-      res.status(404).json({ message: "User not found" });
-      return;
+userRouter.get(
+  "/profile",
+  authMiddleware,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const loggedInUser = req.user;
+
+      if (!loggedInUser) {
+        res.status(401).json({
+          message: "User not authenticated",
+        });
+        return;
+      }
+
+      const userWithoutPassword = loggedInUser.toObject();
+      delete userWithoutPassword.password;
+
+      res.json({
+        message: "Current user found",
+        data: userWithoutPassword,
+        isOwnProfile: true,
+      });
+    } catch (error) {
+      console.error("Current user profile fetch error:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch user profile";
+
+      res.status(500).json({
+        message: errorMessage,
+      });
     }
-    res.json({ message: "User found", data: user });
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error ? error.message : "unable to edit";
-    res.status(401).json({ message: errorMessage });
   }
-});
+);
+
+userRouter.get(
+  "/profile/:id",
+  authMiddleware,
+  async (req: AuthenticatedRequest, res: Response) => {
+    try {
+      const userId = req.params.id;
+      const loggedInUser = req.user;
+
+      console.log("Profile route - userId param:", userId);
+      console.log("Profile route - loggedInUser:", loggedInUser?._id);
+
+      if (!mongoose.Types.ObjectId.isValid(userId)) {
+        console.log("Invalid ObjectId format");
+        res.status(400).json({
+          message: "Invalid user ID format",
+        });
+        return;
+      }
+
+      const userProfile = await User.findById(userId).select("-password");
+      console.log("Found user profile:", !!userProfile);
+
+      if (!userProfile) {
+        res.status(404).json({
+          message: "User not found",
+        });
+        return;
+      }
+
+      const isOwnProfile = loggedInUser?._id.equals(
+        new mongoose.Types.ObjectId(userId)
+      );
+      console.log("Is own profile:", isOwnProfile);
+
+      res.json({
+        message: "User found",
+        data: userProfile,
+        isOwnProfile,
+      });
+    } catch (error) {
+      console.error("Profile fetch error:", error);
+      const errorMessage =
+        error instanceof Error ? error.message : "Failed to fetch user profile";
+
+      res.status(500).json({
+        message: errorMessage,
+      });
+    }
+  }
+);
 
 userRouter.patch(
   "/profile/edit",
@@ -58,8 +129,8 @@ userRouter.patch(
         }
       });
 
-      await user.save();
-      res.json({ message: "Updated successfully", data: user });
+      const response = await user.save();
+      res.json({ message: "Updated successfully", data: response });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "unable to edit";
@@ -89,6 +160,7 @@ userRouter.patch(
 
       if (!isOldPasswordMatch) {
         res.status(400).json({ message: "Make sure the passwords are same" });
+        return; // Add this to prevent executing further code
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;

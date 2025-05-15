@@ -58,6 +58,7 @@ const Auth = () => {
       }
 
       dispatch(addUser(response.data.data));
+      localStorage.setItem("loggedInUser", JSON.stringify(response.data.data));
       navigate("/");
       console.log("Response:", response);
     } catch (error) {
