@@ -10,7 +10,7 @@ export interface UserInterface extends Document {
   email: string;
   password: string;
   role: "mentor" | "mentee" | "both";
-  exprience: string;
+  experience: string;
   skillsOffered?: string[];
   skillsWanted?: string[];
   bio?: string;
@@ -48,12 +48,19 @@ const userSchema = new Schema<UserInterface>(
       default: "mentee",
       required: true,
     },
-    exprience: {
+    experience: {
       type: String,
+      default: "",
     },
-    skillsOffered: [{ type: String }],
-    skillsWanted: [{ type: String }],
-    bio: { type: String },
+    skillsOffered: {
+      type: [String],
+      default: [],
+    },
+    skillsWanted: {
+      type: [String],
+      default: [],
+    },
+    bio: { type: String, default: "" },
     avatar: {
       type: String,
       default: "https://avatar.iran.liara.run/public/boy?username=Ash",

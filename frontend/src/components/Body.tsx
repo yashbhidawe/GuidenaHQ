@@ -17,29 +17,28 @@ const Body = () => {
 
   const userData = useSelector((appStore: RootState) => appStore.user);
 
-  const fetchUser = async () => {
-    try {
-      if (userData) return;
-
-      const res = await axios.get(`${BASE_URL}/profile`, {
-        withCredentials: true,
-      });
-      console.log(res.data);
-      dispatch(addUser(res.data));
-    } catch (error) {
-      console.log(error);
-      toast.error("Something went wrong while fetching user data!");
-      // if (location.pathname !== "/landing") {
-      //   navigate("/landing");
-      // } else {
-      navigate("/auth");
-      // }
-    }
-  };
-
   useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        if (userData) return;
+
+        const res = await axios.get(`${BASE_URL}/profile`, {
+          withCredentials: true,
+        });
+        dispatch(addUser(res.data));
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          toast.error(
+            error.response?.data?.message || "Failed to fetch user data"
+          );
+        }
+        navigate("/auth");
+      }
+    };
+
     fetchUser();
-  }, []);
+  }, [dispatch, navigate, userData]);
+
   return (
     <>
       <Navbar />
