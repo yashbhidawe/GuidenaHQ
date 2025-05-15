@@ -3,6 +3,7 @@ import { User } from "../models/User";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { validateSignupData } from "../utils/validator";
+import lodash from "lodash";
 const authRouter = Express.Router();
 
 authRouter.post("/signup", async (req, res) => {
@@ -11,11 +12,11 @@ authRouter.post("/signup", async (req, res) => {
     validateSignupData(req);
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
-      firstName: firstName.capitalize(),
-      lastName: lastName.capitalize(),
-      email,
-      role: role.toLowerCase(),
-      experience: experience.toLowerCase(),
+      firstName: lodash.capitalize(firstName),
+      lastName: lodash.capitalize(lastName),
+      role: lodash.toLower(role),
+      experience: lodash.toLower(experience),
+      email: lodash.toLower(email),
       password: hashedPassword,
     });
 
@@ -43,7 +44,7 @@ authRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log(user);
+    console.log("logged in user", user);
 
     if (!user) {
       throw new Error("User not found!");

@@ -1,15 +1,23 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-export interface UserState {
+export interface UserData {
+  _id: string;
   firstName: string;
   lastName: string;
   email: string;
   role: "mentor" | "mentee" | "both";
   experience: string;
+  skillsOffered: string[];
+  skillsWanted: string[];
+  bio: string;
   avatar: string;
   token?: string;
 }
 
+export interface UserState {
+  data: UserData;
+  isLoggedIn: boolean;
+}
 const initialState = null as UserState | null;
 
 const userSlice = createSlice({
@@ -21,6 +29,15 @@ const userSlice = createSlice({
     },
     removeUser() {
       return null;
+    },
+    getUser(state) {
+      return state;
+    },
+    updateUser(state, action: PayloadAction<Partial<UserState>>) {
+      if (state) {
+        return { ...state, ...action.payload };
+      }
+      return state;
     },
   },
 });
