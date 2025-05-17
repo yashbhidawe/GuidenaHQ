@@ -12,7 +12,14 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { AlertCircle, CheckCircle, XCircle, UserX } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  XCircle,
+  UserX,
+  MessageCircleCode,
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface User {
   _id: string;
@@ -441,6 +448,16 @@ const Requests = () => {
                         <UserX className="h-4 w-4" />
                         Terminate Mentorship
                       </Button>
+                      <Link to={`/chat/${connection.connectionId}`}>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-2"
+                        >
+                          <MessageCircleCode className="h-4 w-4" />
+                          Chat
+                        </Button>
+                      </Link>
                     </CardFooter>
                   </Card>
                 ))}
