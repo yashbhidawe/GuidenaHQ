@@ -8,6 +8,7 @@ import { appStore } from "./store/appStore";
 import Requests from "./pages/Requests";
 import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
+import Chat from "./pages/Chat";
 
 const AppRouters = () => {
   return (
@@ -19,6 +20,7 @@ const AppRouters = () => {
           <Route path="/requests" element={<Requests />} />
           <Route path="/profile/:userID" element={<Profile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
+          <Route path="/chat/:mentorshipId" element={<Chat />} />
         </Route>
       </Routes>
 

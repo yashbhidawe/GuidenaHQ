@@ -19,6 +19,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constants";
+import { Link } from "react-router-dom";
 
 interface FeedCardProps {
   _id: string;
@@ -28,6 +29,7 @@ interface FeedCardProps {
   skillsOffered: string[];
   skillsWanted: string[];
   avatar: string;
+  userId: string;
 }
 
 const FeedCard: FC<FeedCardProps> = ({
@@ -38,6 +40,7 @@ const FeedCard: FC<FeedCardProps> = ({
   skillsOffered,
   skillsWanted,
   avatar,
+  userId,
 }) => {
   const initials = `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   const [isRequestSent, setIsRequestSent] = useState<boolean>(false);
@@ -97,28 +100,29 @@ const FeedCard: FC<FeedCardProps> = ({
   return (
     <Card className="w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-l-4 border-l-teal-500">
       <div className="p-6">
-        <div className="flex items-center gap-4 mb-4">
-          <Avatar className="h-16 w-16 ring-2 ring-offset-2 ring-teal-500">
-            <AvatarImage src={avatar} alt={`${firstName} ${lastName}`} />
-            <AvatarFallback className="bg-gradient-to-br from-teal-400 to-teal-600 text-white text-lg">
-              {initials}
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex-1">
-            <div className="flex justify-between items-start">
-              <h3 className="text-xl font-bold text-gray-800">
-                {firstName} {lastName}
-              </h3>
-              {isRequestSent && (
-                <Badge className="bg-teal-100 text-teal-800">
-                  Request Sent
-                </Badge>
-              )}
+        <Link to={`/profile/${userId}`} key={userId}>
+          <div className="flex items-center gap-4 mb-4">
+            <Avatar className="h-16 w-16 ring-2 ring-offset-2 ring-teal-500">
+              <AvatarImage src={avatar} alt={`${firstName} ${lastName}`} />
+              <AvatarFallback className="bg-gradient-to-br from-teal-400 to-teal-600 text-white text-lg">
+                {initials}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <div className="flex justify-between items-start">
+                <h3 className="text-xl font-bold text-gray-800">
+                  {firstName} {lastName}
+                </h3>
+                {isRequestSent && (
+                  <Badge className="bg-teal-100 text-teal-800">
+                    Request Sent
+                  </Badge>
+                )}
+              </div>
+              <p className="text-gray-500 text-sm mt-1">{experience}</p>
             </div>
-            <p className="text-gray-500 text-sm mt-1">{experience}</p>
           </div>
-        </div>
-
+        </Link>
         <CardContent className="p-0 space-y-4">
           {skillsOffered.length > 0 && (
             <div>
