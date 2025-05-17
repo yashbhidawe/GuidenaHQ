@@ -6,7 +6,6 @@ import FeedCard from "../components/FeedCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/appStore";
-import { Link } from "react-router-dom";
 
 interface UserData {
   _id: string;
@@ -100,17 +99,16 @@ const Feed = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {mentorUsers.map((user) => (
-                <Link to={`/profile/${user._id}`} key={user._id}>
-                  <FeedCard
-                    _id={user._id}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                    experience={user.experience}
-                    skillsOffered={user.skillsOffered}
-                    skillsWanted={user.skillsWanted}
-                    avatar={user.avatar}
-                  />
-                </Link>
+                <FeedCard
+                  _id={user._id}
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  experience={user.experience}
+                  skillsOffered={user.skillsOffered}
+                  skillsWanted={user.skillsWanted}
+                  avatar={user.avatar}
+                  userId={user._id}
+                />
               ))}
             </div>
           )}
@@ -132,17 +130,16 @@ const Feed = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {menteeUsers.map((user) => (
-                <Link to={`/profile/${user._id}`} key={user._id}>
-                  <FeedCard
-                    _id={user._id}
-                    firstName={user.firstName}
-                    lastName={user.lastName}
-                    experience={user.experience}
-                    skillsOffered={user.skillsOffered}
-                    skillsWanted={user.skillsWanted}
-                    avatar={user.avatar}
-                  />
-                </Link>
+                <FeedCard
+                  _id={user._id}
+                  firstName={user.firstName}
+                  lastName={user.lastName}
+                  experience={user.experience}
+                  skillsOffered={user.skillsOffered}
+                  skillsWanted={user.skillsWanted}
+                  avatar={user.avatar}
+                  userId={user._id}
+                />
               ))}
             </div>
           )}
