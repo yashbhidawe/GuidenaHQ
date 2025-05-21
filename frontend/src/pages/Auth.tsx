@@ -106,7 +106,12 @@ const Auth = () => {
         </h2>
 
         {isSignUp ? (
-          <div className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              handleSignup(e);
+            }}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="signup-name"
@@ -220,15 +225,20 @@ const Auth = () => {
 
             <div className="pt-2">
               <button
-                onClick={handleSignup}
+                type="submit"
                 className="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
               >
                 Sign Up
               </button>
             </div>
-          </div>
+          </form>
         ) : (
-          <div className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              handleLogin(e);
+            }}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="login-email"
@@ -278,13 +288,13 @@ const Auth = () => {
 
             <div className="pt-2">
               <button
-                onClick={handleLogin}
+                type="submit"
                 className="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
               >
                 Log In
               </button>
             </div>
-          </div>
+          </form>
         )}
 
         <div className="mt-6 text-center">

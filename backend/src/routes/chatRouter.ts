@@ -11,6 +11,9 @@ chatRouter.get(
     const { receiverId } = req.params;
     const userId = req.user!._id;
 
+    console.log(receiverId, "receiverId");
+    console.log(userId, "userId");
+
     try {
       let chat = await Chat.findOne({
         participants: { $all: [userId, receiverId] },
@@ -40,3 +43,5 @@ chatRouter.get(
     }
   }
 );
+
+export default chatRouter;
