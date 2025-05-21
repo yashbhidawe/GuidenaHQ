@@ -279,20 +279,22 @@ mentorshipRouter.get(
           "firstName avatar firstName lastName avatar bio skillsOffered experience email"
         );
 
-      const data = connectionRequests.map((row) => {
-        const menteeId = new mongoose.Types.ObjectId(
-          (row.mentee as any)._id || row.mentee
-        ).toString();
+      const data = connectionRequests
+        .map((row) => {
+          const menteeId = new mongoose.Types.ObjectId(
+            (row.mentee as any)._id || row.mentee
+          ).toString();
+          const currentUserId = loggedInUser._id.toString();
 
-        const currentUserId = loggedInUser._id.toString();
-
-        if (menteeId === currentUserId) {
+          const otherUser =
+            menteeId === currentUserId ? row.mentor : row.mentee;
           return {
             connectionId: row._id,
-            user: menteeId === currentUserId ? row.mentor : row.mentee,
+            userId: (otherUser as any)._id.toString(),
+            user: otherUser,
           };
-        }
-      });
+        })
+        .filter(Boolean);
       res.status(200).json({
         data: data,
       });
