@@ -44,6 +44,7 @@ interface RequestInterface {
 interface ConnectionInterface {
   connectionId: string;
   user: {
+    _id: string;
     firstName: string;
     lastName: string;
     avatar: string;
@@ -448,7 +449,7 @@ const Requests = () => {
                         <UserX className="h-4 w-4" />
                         Terminate Mentorship
                       </Button>
-                      <Link to={`/chat/${connection.connectionId}`}>
+                      <Link to={`/chat/${connection.user._id}`}>
                         <Button
                           variant="outline"
                           size="sm"
