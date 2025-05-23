@@ -1,6 +1,8 @@
 import Express from "express";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { Chat } from "../models/Chat";
+import { User } from "../models/User";
+import { mentorshipRequestModel } from "../models/Mentorship";
 
 const chatRouter = Express.Router();
 
@@ -15,6 +17,28 @@ chatRouter.get(
     console.log(userId, "userId");
 
     try {
+      const receiver = await User.findById(receiverId).select(
+        "firstName lastName avatar"
+      );
+
+      if (!receiver) {
+        res.status(404).json({ message: "Receiver not found" });
+        return;
+      }
+      const connectionExists = await mentorshipRequestModel.findOne({
+        $or: [
+          { mentor: userId, mentee: receiverId, status: "accepted" },
+          { mentor: receiverId, mentee: userId, status: "accepted" },
+        ],
+      });
+
+      if (!connectionExists) {
+        res.status(403).json({
+          message:
+            "Cannot start chat - no accepted mentorship connection exists",
+        });
+        return;
+      }
       let chat = await Chat.findOne({
         participants: { $all: [userId, receiverId] },
       }).populate({
@@ -34,6 +58,10 @@ chatRouter.get(
       res.status(200).json({
         message: "chat created",
         data: chat,
+        receiverId: receiver._id,
+        firstName: receiver.firstName,
+        lastName: receiver.lastName,
+        avatar: receiver.avatar,
       });
     } catch (error) {
       console.error("Error fetching chat:", error);
