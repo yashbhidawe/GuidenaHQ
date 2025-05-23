@@ -69,7 +69,6 @@ feedRouter.get(
   }
 );
 
-// New endpoint for "both" role users
 feedRouter.get(
   "/both",
   authMiddleware,
@@ -81,25 +80,22 @@ feedRouter.get(
         return;
       }
 
-      // Find potential mentors (for me to learn from)
       const potentialMentors = await User.find({
         role: { $in: ["mentor", "both"] },
         skillsOffered: { $in: loggedInUser.skillsWanted },
         _id: { $ne: loggedInUser._id },
       }).select("-password");
 
-      // Find potential mentees (for me to teach)
       const potentialMentees = await User.find({
         role: { $in: ["mentee", "both"] },
         skillsWanted: { $in: loggedInUser.skillsOffered },
         _id: { $ne: loggedInUser._id },
       }).select("-password");
 
-      // Combine and tag the results
       const combinedFeed = {
         mentors: potentialMentors.map((user) => ({
           ...user.toObject(),
-          relationshipType: "mentor", // This user can mentor you
+          relationshipType: "mentor",
         })),
         mentees: potentialMentees.map((user) => ({
           ...user.toObject(),
