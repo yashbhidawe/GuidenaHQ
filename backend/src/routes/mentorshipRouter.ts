@@ -12,12 +12,26 @@ mentorshipRouter.post(
   async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
+      const userId = req?.user?._id;
       if (!user) {
         throw new Error("user not found!");
       }
       const menteeId = user._id;
       const mentorId = req.params.mentor;
 
+      const connectionExists = await mentorshipRequestModel.findOne({
+        $or: [
+          { mentor: userId, mentee: menteeId, status: "accepted" },
+          { mentor: menteeId, mentee: userId, status: "accepted" },
+        ],
+      });
+
+      if (!connectionExists) {
+        res.status(403).json({
+          message: "Cannot send a request if connection is already present ",
+        });
+        return;
+      }
       const pitchMessage = req.body.pitchMessage;
       if (!pitchMessage) {
         res.status(400).json({

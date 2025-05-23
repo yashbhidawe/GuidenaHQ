@@ -8,7 +8,6 @@ import axios from "axios";
 import { format } from "date-fns";
 import { Send, ArrowLeft, Loader2 } from "lucide-react";
 
-// ShadCN imports
 import {
   Card,
   CardContent,
@@ -18,7 +17,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 
 // App imports
@@ -40,7 +38,6 @@ const Chat = () => {
   const [socket, setSocket] = useState<Socket<DefaultEventsMap> | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // Scroll to bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -58,13 +55,11 @@ const Chat = () => {
           return;
         }
 
-        // Set receiver name if available
-        if (chat?.data?.data?.receiverId) {
-          const receiver = chat.data.data.receiverId;
-          const fullName = `${receiver.firstName} ${receiver.lastName}`;
+        if (chat?.data?.receiverId) {
+          const fullName = `${chat.data.firstName} ${chat.data.lastName}`;
           setReceiverName(fullName);
           setReceiverInitials(
-            `${receiver.firstName.charAt(0)}${receiver.lastName.charAt(0)}`
+            `${chat.data.firstName.charAt(0)}${chat.data.lastName.charAt(0)}`
           );
         }
 
@@ -171,7 +166,6 @@ const Chat = () => {
       }
     );
 
-    // Clean up function
     return () => {
       newSocket?.disconnect();
     };
@@ -193,7 +187,6 @@ const Chat = () => {
 
   return (
     <Card className="flex flex-col h-screen border-none rounded-none">
-      {/* Fixed Header */}
       <CardHeader className="bg-deep-teal text-off-white py-3 px-4 flex flex-row items-center space-y-0 sticky top-0 z-10">
         <Link to="/requests" className="mr-3">
           <Button
@@ -204,7 +197,7 @@ const Chat = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <ScrollArea className="flex items-center gap-3">
+        <div className="flex items-center gap-3">
           <Avatar className="h-8 w-8 bg-light-teal">
             <AvatarFallback className="text-deep-teal font-medium text-sm">
               {receiverInitials}
@@ -213,10 +206,9 @@ const Chat = () => {
           <div>
             <h2 className="font-semibold text-lg">{receiverName || "Chat"}</h2>
           </div>
-        </ScrollArea>
+        </div>
       </CardHeader>
 
-      {/* Scrollable Message Area */}
       <CardContent className="flex-1 p-0 overflow-hidden">
         <div className="h-full overflow-y-auto p-4">
           {isLoading ? (
@@ -284,7 +276,6 @@ const Chat = () => {
 
       <Separator className="bg-light-gray" />
 
-      {/* Fixed Footer */}
       <CardFooter className="p-3 bg-off-white sticky bottom-0 z-10">
         <form
           onSubmit={handleSubmit}
