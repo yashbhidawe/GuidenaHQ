@@ -3,20 +3,16 @@ import { User, UserInterface } from "../models/User";
 import jwt, { JwtPayload } from "jsonwebtoken";
 
 export interface AuthenticatedRequest extends Request {
-  user?: UserInterface;
+  user: UserInterface;
 }
 
 const authMiddleware = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const token = req.cookies?.token;
-
-    // Debug log
-    console.log("Request path:", req.path);
-    console.log("Token exists:", !!token);
 
     if (!token) {
       throw new Error("Token not found");
@@ -28,7 +24,6 @@ const authMiddleware = async (
     }
 
     const decoded = jwt.verify(token, jwtSecret) as JwtPayload;
-    console.log("Decoded token user ID:", decoded._id);
 
     const { _id } = decoded;
 
@@ -37,10 +32,7 @@ const authMiddleware = async (
       throw new Error("User not found");
     }
 
-    console.log("User found in DB:", user._id);
-    console.log("Current route params:", req.params);
-
-    req.user = user;
+    (req as AuthenticatedRequest).user = user;
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);

@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { addUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Loader } from "@/components/Loader";
 
 const EditProfile: React.FC = () => {
   const user = useSelector((appStore: RootState) => appStore.user);
@@ -99,7 +100,7 @@ const EditProfile: React.FC = () => {
     }
   };
 
-  if (!user) return <p>Loading user...</p>;
+  if (!user) return <Loader />;
 
   return (
     <div className="edit-profile-container">

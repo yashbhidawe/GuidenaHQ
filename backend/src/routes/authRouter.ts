@@ -20,7 +20,6 @@ authRouter.post("/signup", async (req, res) => {
       password: hashedPassword,
     });
 
-    console.log(hashedPassword);
     const savedUser = await user.save();
     const token = await user.getJWT();
     console.log("token from signup ", token);

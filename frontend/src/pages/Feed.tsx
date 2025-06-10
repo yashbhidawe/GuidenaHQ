@@ -77,13 +77,13 @@ const Feed = () => {
   return (
     <div className="space-y-6 ">
       <Tabs defaultValue="mentors" className="w-full">
-        <TabsList className="grid w-full md:w-80 grid-cols-2">
+        <TabsList className="grid w-full md:w-80 grid-cols-2 my-0 mx-auto">
           <TabsTrigger value="mentors">Find Mentors</TabsTrigger>
           <TabsTrigger value="mentees">Find Mentees</TabsTrigger>
         </TabsList>
 
         <TabsContent value="mentors" className="mt-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
             People Who Can Mentor You
           </h2>
           {mentorUsers.length === 0 ? (
@@ -115,7 +115,7 @@ const Feed = () => {
         </TabsContent>
 
         <TabsContent value="mentees" className="mt-6">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
             People You Can Mentor
           </h2>
           {menteeUsers.length === 0 ? (

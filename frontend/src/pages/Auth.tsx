@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const [loginFormData, setLoginFormData] = React.useState({
     email: "",
@@ -45,6 +46,8 @@ const Auth = () => {
   const handleLogin = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
+      setIsLoading(true);
+
       if (!loginFormData.email || !loginFormData.password) {
         console.log("Please fill in all fields");
         return;
@@ -59,6 +62,8 @@ const Auth = () => {
 
       dispatch(addUser(response.data.data));
       localStorage.setItem("loggedInUser", JSON.stringify(response.data.data));
+      setIsLoading(false);
+      setLoginFormData({ email: "", password: "" });
       navigate("/");
       console.log("Response:", response);
     } catch (error) {
@@ -81,6 +86,7 @@ const Auth = () => {
         console.log("Please fill in all fields");
         return;
       }
+      setIsLoading(true);
       const response = await axios.post(`${BASE_URL}/signup`, signUpFormData, {
         withCredentials: true,
       });
@@ -90,6 +96,15 @@ const Auth = () => {
       }
 
       setIsSignUp(false);
+      setIsLoading(false);
+      setSignUpFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        role: "mentee",
+        experience: "",
+        password: "",
+      });
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";
@@ -227,6 +242,7 @@ const Auth = () => {
               <button
                 type="submit"
                 className="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
+                disabled={isLoading}
               >
                 Sign Up
               </button>
@@ -290,6 +306,7 @@ const Auth = () => {
               <button
                 type="submit"
                 className="w-full bg-teal-700 hover:bg-teal-800 text-white font-medium py-3 px-4 rounded-md transition-colors duration-300"
+                disabled={isLoading}
               >
                 Log In
               </button>
