@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Send, X, BookOpen, Lightbulb } from "lucide-react";
+import { Loader } from "./Loader";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -172,11 +173,7 @@ const FeedCard: FC<FeedCardProps> = ({
             onClick={revokeRequest}
             disabled={isLoading}
           >
-            {isLoading ? (
-              <div className="w-4 h-4 border-2 border-red-500 border-t-transparent rounded-full animate-spin"></div>
-            ) : (
-              <X size={16} />
-            )}
+            {isLoading ? <Loader /> : <X size={16} />}
             Revoke Request
           </Button>
         ) : (
@@ -229,9 +226,7 @@ const FeedCard: FC<FeedCardProps> = ({
                   }}
                   disabled={isLoading}
                 >
-                  {isLoading ? (
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                  ) : null}
+                  {isLoading ? <Loader /> : null}
                   Send Request
                 </AlertDialogAction>
               </AlertDialogFooter>

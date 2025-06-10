@@ -1,6 +1,7 @@
 import express from "express";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { User, UserInterface } from "../models/User";
+import { mentorshipRequestModel } from "../models/Mentorship";
 
 const feedRouter = express.Router();
 
@@ -92,6 +93,18 @@ feedRouter.get(
         _id: { $ne: loggedInUser._id },
       }).select("-password");
 
+      // const existingConnection = await mentorshipRequestModel.findOne({
+      //   $or: [
+      //     { menteeId: menteeId, mentorId: mentorId },
+      //     { menteeId: mentorId, mentorId: menteeId },
+      //   ],
+      // });
+      // if (existingConnection) {
+      //   res.status(400).json({
+      //     message: "conncetion already exists",
+      //   });
+      //   return;
+      // }
       const combinedFeed = {
         mentors: potentialMentors.map((user) => ({
           ...user.toObject(),

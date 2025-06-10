@@ -14,7 +14,7 @@
   --color-soft-gold: #e9b92b; /* Slightly toned down gold - achievements, highlights */
 
   /* Neutral colors */
-  --color-off-white: #f8fafc; /* Background */
+  --color-off-white: #000000; /* Background f8fafc*/
   --color-light-gray: #e2e8f0; /* Dividers, borders */
   --color-slate-gray: #3a4454; /* Primary text - darker for better readability */
   --color-medium-gray: #6b7280; /* Secondary text */

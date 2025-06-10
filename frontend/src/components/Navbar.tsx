@@ -3,12 +3,12 @@ const Navbar = () => {
     <div>
       <nav>
         <ul className="flex justify-between bg-gray-800 p-4 text-white">
-          <li className="text-lg font-bold">MyApp</li>
+          <li className="text-lg font-bold">GuidenaHQ</li>
           <li className="hover:text-gray-400">
             <a href="/">Home</a>
           </li>
           <li className="hover:text-gray-400">
-            <a href="/about">About</a>
+            <a href="/requests">requests</a>
           </li>
           <li className="hover:text-gray-400">
             <a href="/profile/edit">Edit</a>
