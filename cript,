@@ -1,0 +1,71 @@
+[33mcommit f3dc4f93c25ad388f4e20b51692bf162606f4339[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Fri May 23 21:55:16 2025 +0530
+
+    fix: security issues with chat
+
+[33mcommit 0ec20539d3ba8b5e66ff42d9e6c20cdb64f7f0be[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Wed May 21 23:44:05 2025 +0530
+
+    add: type definations
+
+[33mcommit c902b1e23aa7698d1c403c3527c6750d1ef2058e[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Wed May 21 23:19:19 2025 +0530
+
+    Feat: Chat
+
+[33mcommit cc7360ac6db85d060be2f81c30b8c968d3982079[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Sun May 18 02:05:00 2025 +0530
+
+    add chat model, router, socket events
+
+[33mcommit 76f7f278e5fe0fc34335cf1e6b1c86d70366eedc[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Thu May 15 23:26:18 2025 +0530
+
+    add: edit profile
+
+[33mcommit 356ab4573566a202eeaa69275ce6f6c8235219d1[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Thu May 8 23:50:40 2025 +0530
+
+    Add: get profile route integrated in frontend
+
+[33mcommit 44d28067fdbab22bbc90d1c7fecaf028f9b1ae07[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Thu May 8 23:16:17 2025 +0530
+
+    Fix: profile routes
+
+[33mcommit 47e3625bd880fb6bdd5158594aaeb2b48a84aac3[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Thu May 8 22:29:52 2025 +0530
+
+    add: mentorship request operations
+
+[33mcommit 421900520a22caac004aef75f8807217b46c0fca[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Wed May 7 08:35:06 2025 +0530
+
+    Add: Auth, Feed
+
+[33mcommit eb805ffc44e76efe52fd7ec856843068eeab2f1c[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Sun May 4 21:42:30 2025 +0530
+
+    fix: vercel issue
+
+[33mcommit 7934f9b9253c46a04de1434674763ebb4eb3b437[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Sun May 4 21:31:15 2025 +0530
+
+    Add: shadCN, react-router-dom
+
+[33mcommit 5ec6706a2be1fe78b9b5f0696f324200041e6368[m
+Author: yash bhidawe <ybh5179@gmail.com>
+Date:   Sun May 4 20:38:19 2025 +0530
+
+    Add: backend routes
