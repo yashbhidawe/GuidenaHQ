@@ -24,6 +24,13 @@ import { RootState } from "@/store/appStore";
 import { BASE_URL } from "@/utils/constants";
 import { ChatMessage, RawMessage } from "@/utils/interfaces";
 import { createSocketConnection } from "@/utils/socket";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerTitle,
+  DrawerTrigger,
+} from "@/components/ui/drawer";
+import MeetingScheduler from "@/components/MeetingScheduler";
 
 const Chat = () => {
   const { receiverId } = useParams();
@@ -31,7 +38,7 @@ const Chat = () => {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const [receiverName, setReceiverName] = useState<string>("");
   const [receiverInitials, setReceiverInitials] = useState<string>("");
-  const userId = user?.data._id;
+  const [userId, setUserId] = useState<string>("");
 
   const [messageInputValue, setMessageInputValue] = useState<string>("");
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -41,6 +48,14 @@ const Chat = () => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
+
+  useEffect(() => {
+    if (user?.data?._id) {
+      setUserId(user.data._id);
+    } else {
+      toast.error("No userID found");
+    }
+  }, [user]);
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -128,7 +143,6 @@ const Chat = () => {
     const newSocket = createSocketConnection();
     setSocket(newSocket);
 
-    console.log("socket connected", newSocket);
     newSocket?.emit("joinChat", {
       userId,
       receiverId,
@@ -205,6 +219,15 @@ const Chat = () => {
           </Avatar>
           <div>
             <h2 className="font-semibold text-lg">{receiverName || "Chat"}</h2>
+          </div>
+          <div>
+            <Drawer>
+              <DrawerTitle className="hidden">Meeting Scheduler</DrawerTitle>
+              <DrawerTrigger>Open</DrawerTrigger>
+              <DrawerContent>
+                <MeetingScheduler receiverId={receiverId!} />
+              </DrawerContent>
+            </Drawer>
           </div>
         </div>
       </CardHeader>
