@@ -16,7 +16,6 @@ export const initializeSocket = (server: any) => {
   const userConnections = new Map();
 
   io.on("connection", (socket) => {
-    console.log(`🔌 New socket connected: ${socket.id}`);
     let currentUserId: string | null = null;
 
     socket.on("joinChat", async ({ userId, receiverId }) => {
@@ -29,13 +28,11 @@ export const initializeSocket = (server: any) => {
 
       const roomId = [userId, receiverId].sort().join("_");
       socket.join(roomId);
-      console.log(`👥 User ${userId} joined room: ${roomId}`);
 
       try {
         await User.findByIdAndUpdate(userId, {
           isOnline: true,
         });
-        console.log(`✅ User ${userId} marked as online`);
       } catch (err) {
         console.error(`❌ Error updating online status:`, err);
       }
@@ -61,7 +58,6 @@ export const initializeSocket = (server: any) => {
               messages: [],
             });
             await chat.save();
-            console.log(`🆕 Chat created between ${userId} and ${receiverId}`);
           }
 
           chat.messages.push({
@@ -79,10 +75,6 @@ export const initializeSocket = (server: any) => {
             firstName: firstName,
             senderId: userId,
           });
-
-          console.log(
-            `📨 Message sent in room ${roomId}: ${firstName}: ${message}`
-          );
         } catch (error) {
           console.error("❌ Error sending message:", error);
           socket.emit("errorMessage", {
@@ -93,15 +85,10 @@ export const initializeSocket = (server: any) => {
     );
 
     socket.on("disconnect", async () => {
-      console.log(`🔌 Socket disconnected: ${socket.id}`);
-
       if (currentUserId) {
         const userSockets = userConnections.get(currentUserId);
         if (userSockets) {
           userSockets.delete(socket.id);
-          console.log(
-            `🧹 Removed socket ${socket.id} from user ${currentUserId}`
-          );
 
           if (userSockets.size === 0) {
             userConnections.delete(currentUserId);
@@ -110,7 +97,6 @@ export const initializeSocket = (server: any) => {
                 lastSeen: new Date(),
                 isOnline: false,
               });
-              console.log(`👋 User ${currentUserId} marked offline`);
             } catch (error) {
               console.error("❌ Error updating offline status:", error);
             }

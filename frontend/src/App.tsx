@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import EditProfile from "./pages/EditProfile";
 import Chat from "./pages/Chat";
 import Meet from "./pages/Meet";
+import Meetings from "./pages/Meetings";
 
 const AppRouters = () => {
   return (
@@ -23,6 +24,7 @@ const AppRouters = () => {
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/chat/:receiverId" element={<Chat />} />
           <Route path="/meet/:receiverId" element={<Meet />} />
+          <Route path="/meetings" element={<Meetings />} />
         </Route>
       </Routes>
 
