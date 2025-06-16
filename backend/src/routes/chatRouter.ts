@@ -13,9 +13,6 @@ chatRouter.get(
     const { receiverId } = req.params;
     const userId = req.user!._id;
 
-    console.log(receiverId, "receiverId");
-    console.log(userId, "userId");
-
     try {
       const receiver = await User.findById(receiverId).select(
         "firstName lastName avatar"
