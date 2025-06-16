@@ -1,7 +1,6 @@
 import express from "express";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { User, UserInterface } from "../models/User";
-import { mentorshipRequestModel } from "../models/Mentorship";
 
 const feedRouter = express.Router();
 
@@ -21,7 +20,6 @@ feedRouter.get(
         _id: { $ne: loggedInUser._id },
       }).select("-password");
 
-      console.log("teachersFeed", teachersFeed);
       if (!teachersFeed) {
         res.status(404).json({
           message: "no mentorship request found",
