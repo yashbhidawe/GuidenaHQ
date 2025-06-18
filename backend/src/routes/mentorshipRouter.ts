@@ -27,7 +27,7 @@ mentorshipRouter.post(
         ],
       });
 
-      if (!connectionExists) {
+      if (connectionExists) {
         res.status(403).json({
           message: "Cannot send a request if connection is already present ",
         });

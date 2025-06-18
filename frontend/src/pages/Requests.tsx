@@ -146,6 +146,27 @@ const Requests = () => {
     }
   };
 
+  const revokeRequest = async (request: RequestInterface) => {
+    setIsLoading((prev) => ({ ...prev, action: true }));
+    try {
+      await axios.delete(
+        `${BASE_URL}/mentorship/request/revoke/${request._id}`,
+        { withCredentials: true }
+      );
+      toast.success(`Request ${status} successfully`);
+      getRequests();
+      getSentRequests();
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(error.response?.data?.message || error.message);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    } finally {
+      setIsLoading((prev) => ({ ...prev, action: false }));
+    }
+  };
+
   const terminateMentorship = async (connection: ConnectionInterface) => {
     setIsLoading((prev) => ({ ...prev, action: true }));
     try {
@@ -361,7 +382,7 @@ const Requests = () => {
                           variant="destructive"
                           size="sm"
                           className="flex items-center gap-2"
-                          onClick={() => reviewRequest(request, "revoked")}
+                          onClick={() => revokeRequest(request)}
                           disabled={isLoading.action}
                         >
                           <XCircle className="h-4 w-4" />
