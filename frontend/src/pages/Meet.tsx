@@ -28,7 +28,6 @@ const Meet = () => {
             enableEmailInStats: false,
             prejoinPageEnabled: true,
             defaultRemoteDisplayName: "GuidenaHQ User",
-            // These settings help with longer sessions
             disableDeepLinking: true,
             enableNoAudioDetection: false,
             enableNoisyMicDetection: false,
