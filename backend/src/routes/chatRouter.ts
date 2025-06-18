@@ -3,13 +3,14 @@ import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { Chat } from "../models/Chat";
 import { User } from "../models/User";
 import { mentorshipRequestModel } from "../models/Mentorship";
+import { createAuthHandler } from "../types/handlers";
 
 const chatRouter = Express.Router();
 
 chatRouter.get(
   "/chat/:receiverId",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     const { receiverId } = req.params;
     const userId = req.user!._id;
 
@@ -66,7 +67,7 @@ chatRouter.get(
         error instanceof Error ? error.message : "Failed to fetch chat";
       res.status(500).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 export default chatRouter;

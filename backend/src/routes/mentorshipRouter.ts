@@ -3,13 +3,14 @@ import { mentorshipRequestModel } from "../models/Mentorship";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { User } from "../models/User";
 import mongoose from "mongoose";
+import { createAuthHandler } from "../types/handlers";
 
 const mentorshipRouter = express.Router();
 //send route specific for feed page
 mentorshipRouter.post(
   "/mentorship/request/send/:mentor",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
       const userId = req?.user?._id;
@@ -82,7 +83,7 @@ mentorshipRouter.post(
       console.log(errorMessage);
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 //group
@@ -90,7 +91,7 @@ mentorshipRouter.post(
 mentorshipRouter.get(
   "/mentorship/request/received",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -125,13 +126,13 @@ mentorshipRouter.get(
         error instanceof Error ? error.message : "Request not found";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 //review route -action
 mentorshipRouter.post(
   "/mentorship/request/review/:status/:requestId",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     console.log("Route hit:", {
       status: req.params.status,
       requestId: req.params.requestId,
@@ -177,7 +178,7 @@ mentorshipRouter.post(
         error instanceof Error ? error.message : "Something went wrong";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 //group
@@ -185,7 +186,7 @@ mentorshipRouter.post(
 mentorshipRouter.get(
   "/mentorship/request/sent",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -220,13 +221,13 @@ mentorshipRouter.get(
         error instanceof Error ? error.message : "Request not found";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 //revoke a sent request -action
 mentorshipRouter.delete(
   "/mentorship/request/revoke/:requestId",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -257,7 +258,7 @@ mentorshipRouter.delete(
         error instanceof Error ? error.message : "Something went wrong";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 //group
@@ -265,7 +266,7 @@ mentorshipRouter.delete(
 mentorshipRouter.get(
   "/mentorship/connections",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -317,13 +318,13 @@ mentorshipRouter.get(
         error instanceof Error ? error.message : "No connections found!";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 // Terminate mentorship -action
 mentorshipRouter.patch(
   "/mentorship/terminate/:mentorshipId",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {
@@ -358,7 +359,7 @@ mentorshipRouter.patch(
         error instanceof Error ? error.message : "Something went wrong";
       res.status(500).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 export default mentorshipRouter;
