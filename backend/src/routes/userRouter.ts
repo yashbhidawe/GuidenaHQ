@@ -4,13 +4,14 @@ import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { validateEditProfileData } from "../utils/validator";
 import { User } from "../models/User";
 import mongoose from "mongoose";
+import { createAuthHandler } from "../types/handlers";
 
 const userRouter = Express.Router();
 
 userRouter.get(
   "/profile",
   authMiddleware,
-  async (req: AuthenticatedRequest, res: Response) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res: Response) => {
     try {
       const loggedInUser = req.user;
 
@@ -38,13 +39,13 @@ userRouter.get(
         message: errorMessage,
       });
     }
-  }
+  })
 );
 
 userRouter.get(
   "/profile/:id",
   authMiddleware,
-  async (req: AuthenticatedRequest, res: Response) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res: Response) => {
     try {
       const userId = req.params.id;
       const loggedInUser = req.user;
@@ -89,13 +90,13 @@ userRouter.get(
         message: errorMessage,
       });
     }
-  }
+  })
 );
 
 userRouter.patch(
   "/profile/edit",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
 
@@ -136,13 +137,13 @@ userRouter.patch(
         error instanceof Error ? error.message : "unable to edit";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 userRouter.patch(
   "/profile/update-password",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
       if (!user) {
@@ -171,7 +172,7 @@ userRouter.patch(
         error instanceof Error ? error.message : "unable to edit";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 export default userRouter;

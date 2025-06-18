@@ -1,13 +1,14 @@
 import express from "express";
 import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
 import { User, UserInterface } from "../models/User";
+import { createAuthHandler } from "../types/handlers";
 
 const feedRouter = express.Router();
 
 feedRouter.get(
   "/teach",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user as UserInterface;
       if (!loggedInUser) {
@@ -36,13 +37,13 @@ feedRouter.get(
         error instanceof Error ? error.message : "cannot get feed";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 feedRouter.get(
   "/learn",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user as UserInterface;
       if (!loggedInUser) {
@@ -65,13 +66,13 @@ feedRouter.get(
         error instanceof Error ? error.message : "cannot get feed";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 feedRouter.get(
   "/both",
   authMiddleware,
-  async (req: AuthenticatedRequest, res) => {
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const loggedInUser = req.user as UserInterface;
       if (!loggedInUser) {
@@ -123,7 +124,7 @@ feedRouter.get(
         error instanceof Error ? error.message : "cannot get feed";
       res.status(401).json({ message: errorMessage });
     }
-  }
+  })
 );
 
 export default feedRouter;
