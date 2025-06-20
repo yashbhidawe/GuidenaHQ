@@ -15,6 +15,8 @@ import { BASE_URL } from "./utils/constants";
 import { initializeSocket } from "./utils/socket";
 import chatRouter from "./routes/chatRouter";
 import meetingRouter from "./routes/meetingRouter";
+import "./config/passport";
+import passport from "passport";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -33,6 +35,8 @@ app.use("/", feedRouter);
 app.use("/", chatRouter);
 app.use("/", mentroshipRouter);
 app.use("/", meetingRouter);
+
+app.use(passport.initialize());
 
 initializeSocket(server);
 server.listen(PORT, () => {

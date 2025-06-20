@@ -1,9 +1,12 @@
 import Express from "express";
 import { User } from "../models/User";
-import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { validateSignupData } from "../utils/validator";
 import lodash from "lodash";
+import passport from "passport";
+import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
+import { createAuthHandler } from "../types/handlers";
+
 const authRouter = Express.Router();
 
 authRouter.post("/signup", async (req, res) => {
@@ -21,11 +24,10 @@ authRouter.post("/signup", async (req, res) => {
     });
 
     const savedUser = await user.save();
-    const token = await user.getJWT();
-    console.log("token from signup ", token);
+    const token = savedUser.getJWT();
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -43,7 +45,6 @@ authRouter.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    console.log("logged in user", user);
 
     if (!user) {
       throw new Error("User not found!");
@@ -52,18 +53,17 @@ authRouter.post("/login", async (req, res) => {
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("Invalid email or password");
 
-    const token = await user.getJWT();
-    console.log("generated token", token);
+    const token = user.getJWT();
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(200).json({
       success: true,
-      message: "Loged in successfully",
+      message: "Logged in successfully",
       data: user,
     });
   } catch (error) {
@@ -77,10 +77,53 @@ authRouter.post("/logout", async (req, res) => {
   res
     .clearCookie("token", {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === "production",
       sameSite: "none",
     })
     .send("logged out successfully");
 });
+
+authRouter.get(
+  "/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+    session: false,
+  })
+);
+
+authRouter.get(
+  "/google/redirect",
+  passport.authenticate("google", {
+    session: false,
+    failureRedirect: "/login?error=auth_failed",
+    scope: ["profile", "email"],
+  }),
+  authMiddleware,
+  createAuthHandler(async (req: AuthenticatedRequest, res) => {
+    try {
+      const token = req.user.getJWT();
+
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+
+      // res.redirect(`${BASE_URL || "http://localhost:3000"}`);
+
+      // Alternative: Send JSON response for API clients
+      res.status(200).json({
+        success: true,
+        message: "Google authentication successful",
+        data: req.user,
+        token: token,
+      });
+    } catch (error) {
+      console.error("Google auth callback error:", error);
+      res.redirect("/login?error=auth_processing_failed");
+    }
+  })
+);
 
 export default authRouter;

@@ -1,4 +1,12 @@
+import { BASE_URL } from "@/utils/constants";
+import axios from "axios";
+
 const Navbar = () => {
+  const handleLogout = async () => {
+    await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+    localStorage.removeItem("loggedInUser");
+    window.location.href = "/";
+  };
   return (
     <div>
       <nav>
@@ -12,6 +20,9 @@ const Navbar = () => {
           </li>
           <li className="hover:text-gray-400">
             <a href="/profile/edit">Edit</a>
+          </li>
+          <li className="hover:text-gray-400">
+            <a onClick={handleLogout}>Logout</a>
           </li>
         </ul>
       </nav>
