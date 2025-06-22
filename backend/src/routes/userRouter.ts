@@ -152,6 +152,13 @@ userRouter.patch(
         });
         return;
       }
+      if (user.googleId && !user.password) {
+        throw new Error("Please sign in with Google");
+      }
+
+      if (!user.password) {
+        throw new Error("Invalid login method");
+      }
       const { oldPassword, newPassword } = req.body;
 
       const isOldPasswordMatch = await bcrypt.compare(
@@ -161,7 +168,7 @@ userRouter.patch(
 
       if (!isOldPasswordMatch) {
         res.status(400).json({ message: "Make sure the passwords are same" });
-        return; // Add this to prevent executing further code
+        return;
       }
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;

@@ -50,6 +50,14 @@ authRouter.post("/login", async (req, res) => {
       throw new Error("User not found!");
     }
 
+    if (user.googleId && !user.password) {
+      throw new Error("Please sign in with Google");
+    }
+
+    if (!user.password) {
+      throw new Error("Invalid login method");
+    }
+
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) throw new Error("Invalid email or password");
 
@@ -98,7 +106,7 @@ authRouter.get(
     failureRedirect: "/login?error=auth_failed",
     scope: ["profile", "email"],
   }),
-  authMiddleware,
+
   createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const token = req.user.getJWT();

@@ -8,7 +8,7 @@ export interface UserInterface extends Document {
   firstName: string;
   lastName?: string;
   email: string;
-  password: string;
+  password?: string;
   role: "mentor" | "mentee" | "both";
   experience: string;
   skillsOffered?: string[];
@@ -36,9 +36,8 @@ const userSchema = new Schema<UserInterface>(
     },
     password: {
       type: String,
-      required: true,
       validate(value: string) {
-        if (!validator.isStrongPassword(value)) {
+        if (value && !validator.isStrongPassword(value)) {
           throw new Error("invalid password");
         }
       },
