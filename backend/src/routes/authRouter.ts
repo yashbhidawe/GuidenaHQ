@@ -4,8 +4,9 @@ import bcrypt from "bcrypt";
 import { validateSignupData } from "../utils/validator";
 import lodash from "lodash";
 import passport from "passport";
-import authMiddleware, { AuthenticatedRequest } from "../middleware/auth";
+import { AuthenticatedRequest } from "../middleware/auth";
 import { createAuthHandler } from "../types/handlers";
+import { BASE_URL } from "../utils/constants";
 
 const authRouter = Express.Router();
 
@@ -27,7 +28,7 @@ authRouter.post("/signup", async (req, res) => {
     const token = savedUser.getJWT();
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -65,7 +66,7 @@ authRouter.post("/login", async (req, res) => {
 
     res.cookie("token", token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "none",
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
@@ -85,7 +86,7 @@ authRouter.post("/logout", async (req, res) => {
   res
     .clearCookie("token", {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: true,
       sameSite: "none",
     })
     .send("logged out successfully");
@@ -113,20 +114,22 @@ authRouter.get(
 
       res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "none",
         maxAge: 7 * 24 * 60 * 60 * 1000,
       });
 
-      // res.redirect(`${BASE_URL || "http://localhost:3000"}`);
+      console.log("Redirecting to:", `${BASE_URL}`); // Debug log
+
+      res.redirect(`${BASE_URL}`);
 
       // Alternative: Send JSON response for API clients
-      res.status(200).json({
-        success: true,
-        message: "Google authentication successful",
-        data: req.user,
-        token: token,
-      });
+      // res.status(200).json({
+      //   success: true,
+      //   message: "Google authentication successful",
+      //   data: req.user,
+      //   token: token,
+      // });
     } catch (error) {
       console.error("Google auth callback error:", error);
       res.redirect("/login?error=auth_processing_failed");

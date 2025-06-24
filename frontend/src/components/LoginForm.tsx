@@ -26,7 +26,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
       setIsLoading(true);
 
       if (!loginFormData.email || !loginFormData.password) {
-        console.log("Please fill in all fields");
+        toast.error("Please fill in all fields");
         return;
       }
 
@@ -42,12 +42,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
       setIsLoading(false);
       setLoginFormData({ email: "", password: "" });
       navigate("/");
-      console.log("Response:", response);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";
       console.log(errorMessage);
-      toast.error(errorMessage);
     }
   };
   return (
