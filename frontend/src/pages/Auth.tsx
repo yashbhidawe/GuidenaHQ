@@ -3,7 +3,6 @@ import React from "react";
 import SignupForm from "@/components/SingupForm";
 import LoginForm from "@/components/LoginForm";
 import { Button } from "@/components/ui/button";
-import axios from "axios";
 import { BASE_URL } from "@/utils/constants";
 
 const Auth = () => {
@@ -13,15 +12,7 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      const response = await axios.get(`${BASE_URL}/google/redirect`, {
-        withCredentials: true,
-      });
-
-      if (response.status === 200) {
-        window.location.assign("/profile"); // Redirect to profile page on successful login
-      } else {
-        console.error("Google login failed:", response.data);
-      }
+      window.location.href = `${BASE_URL}/google`;
     } catch (error) {
       console.error("Google login failed:", error);
     }

@@ -3,7 +3,6 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { toast } from "react-toastify";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constants";
 import { addUser } from "@/store/slices/userSlice";
@@ -28,7 +27,7 @@ const Body = () => {
         dispatch(addUser(res.data));
       } catch (error) {
         if (axios.isAxiosError(error)) {
-          toast.error(
+          console.error(
             error.response?.data?.message || "Failed to fetch user data"
           );
         }
