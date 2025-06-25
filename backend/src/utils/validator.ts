@@ -4,7 +4,15 @@ import { Request } from "express";
 import { AuthenticatedRequest } from "../middleware/auth";
 
 export const validateSignupData = (req: Request) => {
-  const { firstName, lastName, email, role, password } = req.body;
+  const {
+    firstName,
+    lastName,
+    email,
+    role,
+    password,
+    skillsOffered,
+    skillsWanted,
+  } = req.body;
 
   if (!firstName || !lastName || !email || !password || !role) {
     throw new Error("All fields are required");
@@ -19,6 +27,12 @@ export const validateSignupData = (req: Request) => {
     throw new Error(
       "First name should be atleast 3 characters long and at max 50 characters long"
     );
+  }
+  if (skillsOffered.length < 1 || skillsOffered.length > 10) {
+    throw new Error("Skills offered should be between 1 and 10 skills");
+  }
+  if (skillsWanted.length < 1 || skillsWanted.length > 10) {
+    throw new Error("Skills wanted should be between 1 and 10 skills");
   }
 };
 

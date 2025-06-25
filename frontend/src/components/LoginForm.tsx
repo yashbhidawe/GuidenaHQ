@@ -49,9 +49,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
     }
   };
   return (
-    <div>
+    <div className="w-full max-w-md mx-auto bg-white p-8 rounded-lg ">
       <form
-        className="space-y-4"
+        className=""
         onSubmit={(e) => {
           handleLogin(e);
         }}

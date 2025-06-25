@@ -99,13 +99,13 @@ const FeedCard: FC<FeedCardProps> = ({
   };
 
   return (
-    <Card className="w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-l-4 border-l-teal-500">
+    <Card className="w-full overflow-hidden hover:shadow-lg transition-all duration-300 border-l-4 border-l-deep-teal">
       <div className="p-6">
         <Link to={`/profile/${userId}`} key={userId}>
           <div className="flex items-center gap-4 mb-4">
-            <Avatar className="h-16 w-16 ring-2 ring-offset-2 ring-teal-500">
+            <Avatar className="h-16 w-16 ring-2 ring-offset-2 ring-medium-teal">
               <AvatarImage src={avatar} alt={`${firstName} ${lastName}`} />
-              <AvatarFallback className="bg-gradient-to-br from-teal-400 to-teal-600 text-white text-lg">
+              <AvatarFallback className="bg-gradient-to-br from-light-teal to-medium-teal text-white text-lg">
                 {initials}
               </AvatarFallback>
             </Avatar>
@@ -128,14 +128,14 @@ const FeedCard: FC<FeedCardProps> = ({
           {skillsOffered.length > 0 && (
             <div>
               <div className="flex items-center gap-2 mb-2">
-                <BookOpen size={16} className="text-teal-500" />
+                <BookOpen size={16} className="text-deep-teal" />
                 <h4 className="font-semibold text-gray-700">Can teach</h4>
               </div>
               <div className="flex flex-wrap gap-2 ml-4">
                 {skillsOffered.map((skill, index) => (
                   <Badge
                     key={`offered-${index}`}
-                    className="bg-teal-50 hover:bg-teal-100 text-teal-700 border-teal-200 py-1"
+                    className="bg-teal-50 hover:bg-teal-100 text-deep-teal border-teal-200 py-1"
                   >
                     {skill}
                   </Badge>
@@ -179,7 +179,7 @@ const FeedCard: FC<FeedCardProps> = ({
         ) : (
           <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <AlertDialogTrigger asChild>
-              <Button className="w-full bg-teal-500 hover:bg-teal-600 text-white flex items-center justify-center gap-2">
+              <Button className="w-full bg-deep-teal hover:bg-medium-teal text-white flex items-center justify-center gap-2">
                 <Send size={16} />
                 Connect with {firstName}
               </Button>

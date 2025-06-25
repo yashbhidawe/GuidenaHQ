@@ -45,7 +45,7 @@ const userSchema = new Schema<UserInterface>(
     role: {
       type: String,
       enum: ["mentor", "mentee", "both"],
-      default: "mentee",
+      default: "both",
       required: true,
     },
     experience: {

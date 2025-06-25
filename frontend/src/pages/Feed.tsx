@@ -6,6 +6,7 @@ import FeedCard from "../components/FeedCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/appStore";
+import { Link } from "react-router-dom";
 
 interface UserData {
   _id: string;
@@ -31,6 +32,9 @@ const Feed = () => {
   const currentUser = useSelector((state: RootState) => state.user);
   const userRole = currentUser?.data?.role || "both";
 
+  const skillsWanted = currentUser?.data?.skillsWanted.length;
+  const skillsOffered = currentUser?.data?.skillsOffered.length;
+
   const getFeed = async () => {
     try {
       setLoading(true);
@@ -49,6 +53,11 @@ const Feed = () => {
         const res = await axios.get(`${BASE_URL}/both`, {
           withCredentials: true,
         });
+        if (!res.data || !res.data.data) {
+          throw new Error("No data found");
+        }
+        console.log(res.data);
+
         const bothData = res.data.data as BothFeedData;
         setMentorUsers(bothData.mentors);
         setMenteeUsers(bothData.mentees);
@@ -74,6 +83,25 @@ const Feed = () => {
     );
   }
 
+  if (skillsWanted === 0 && skillsOffered === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[400px]">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-4 text-center">
+          Please update your profile to find mentors or mentees
+        </h2>
+        <p className="text-gray-500 mb-6">
+          Add skills you want to learn or offer to mentor others.
+        </p>
+        <Link to="/profile/edit" className="text-deep-teal hover:underline">
+          Go to Profile
+        </Link>
+        <p className="text-gray-500 mt-2">
+          Once you update your profile, you will see relevant mentors or mentees
+          here.
+        </p>
+      </div>
+    );
+  }
   return (
     <div className="space-y-6 ">
       <Tabs defaultValue="mentors" className="w-full">
@@ -108,6 +136,7 @@ const Feed = () => {
                   skillsWanted={user.skillsWanted}
                   avatar={user.avatar}
                   userId={user._id}
+                  key={user._id}
                 />
               ))}
             </div>

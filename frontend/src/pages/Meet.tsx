@@ -15,7 +15,7 @@ const Meet = () => {
           <Loader />
         </div>
       )}{" "}
-      <>
+      <div className="h-full w-full flex justify-center items-center">
         <JitsiMeeting
           domain="meet.jit.si"
           roomName={`guidenaHQ-${
@@ -59,7 +59,7 @@ const Meet = () => {
           }}
           onApiReady={() => setIsLoading(false)}
         />
-      </>
+      </div>
       )
     </div>
   );
