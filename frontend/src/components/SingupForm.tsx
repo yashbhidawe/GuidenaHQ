@@ -1,7 +1,7 @@
 //SingupFrom.tsx
 import { BASE_URL } from "@/utils/constants";
 import axios from "axios";
-import React from "react";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 
 interface SignupFormProps {
@@ -9,18 +9,31 @@ interface SignupFormProps {
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
   setIsSignUp: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+interface SignUpFormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: string;
+  experience: string;
+  password: string;
+  skillsOffered: string[];
+  skillsWanted: string[];
+}
 const SignupForm: React.FC<SignupFormProps> = ({
   isLoading,
   setIsLoading,
   setIsSignUp,
 }) => {
-  const [signUpFormData, setSignUpFormData] = React.useState({
+  const [signUpFormData, setSignUpFormData] = useState<SignUpFormData>({
     firstName: "",
     lastName: "",
     email: "",
     role: "mentee",
     experience: "",
     password: "",
+    skillsOffered: [],
+    skillsWanted: [],
   });
 
   const handleSignup = async (e: React.FormEvent) => {
@@ -49,9 +62,11 @@ const SignupForm: React.FC<SignupFormProps> = ({
         firstName: "",
         lastName: "",
         email: "",
-        role: "mentee",
+        role: "both",
         experience: "",
         password: "",
+        skillsOffered: [],
+        skillsWanted: [],
       });
     } catch (error) {
       const errorMessage =
@@ -68,48 +83,53 @@ const SignupForm: React.FC<SignupFormProps> = ({
           handleSignup(e);
         }}
       >
-        <div className="space-y-2">
-          <label
-            htmlFor="signup-name"
-            className="block text-slate-700 font-medium"
-          >
-            First Name
-          </label>
-          <input
-            id="signup-name"
-            type="text"
-            value={signUpFormData.firstName}
-            onChange={(e) =>
-              setSignUpFormData({
-                ...signUpFormData,
-                firstName: e.target.value,
-              })
-            }
-            placeholder="Enter your first name"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
-          />
+        <div className="space-y-2 flex">
+          <span>
+            {" "}
+            <label
+              htmlFor="signup-name"
+              className="block text-slate-700 font-medium"
+            >
+              First Name
+            </label>
+            <input
+              id="signup-name"
+              type="text"
+              value={signUpFormData.firstName}
+              onChange={(e) =>
+                setSignUpFormData({
+                  ...signUpFormData,
+                  firstName: e.target.value,
+                })
+              }
+              placeholder="Enter your first name"
+              className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
+            />
+          </span>
+
+          <span>
+            <label
+              htmlFor="signup-last-name"
+              className="block text-slate-700 font-medium"
+            >
+              Last Name
+            </label>
+            <input
+              id="signup-name"
+              type="text"
+              value={signUpFormData.lastName}
+              onChange={(e) =>
+                setSignUpFormData({
+                  ...signUpFormData,
+                  lastName: e.target.value,
+                })
+              }
+              placeholder="Enter your first name"
+              className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
+            />
+          </span>
         </div>
-        <div className="space-y-2">
-          <label
-            htmlFor="signup-last-name"
-            className="block text-slate-700 font-medium"
-          >
-            Last Name
-          </label>
-          <input
-            id="signup-name"
-            type="text"
-            value={signUpFormData.lastName}
-            onChange={(e) =>
-              setSignUpFormData({
-                ...signUpFormData,
-                lastName: e.target.value,
-              })
-            }
-            placeholder="Enter your first name"
-            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
-          />
-        </div>
+        <div className="space-y-2"></div>
 
         <div className="space-y-2">
           <label
@@ -178,7 +198,55 @@ const SignupForm: React.FC<SignupFormProps> = ({
             className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
           />
         </div>
+        {/* skillsOffered */}
+        <div className="space-y-2">
+          <label
+            htmlFor="signup-skills-offered"
+            className="block text-slate-700 font-medium"
+          >
+            Skills you offer (comma separated)
+          </label>
+          <input
+            id="signup-skills-offered"
+            type="text"
+            value={signUpFormData.skillsOffered.join(", ")}
+            onChange={(e) =>
+              setSignUpFormData({
+                ...signUpFormData,
+                skillsOffered: e.target.value
+                  .split(",")
+                  .map((skill) => skill.trim()),
+              })
+            }
+            placeholder="Skill1, Skill2, Skill3"
+            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
+          />
+        </div>
+        {/* skillsWanted */}
 
+        <div className="space-y-2">
+          <label
+            htmlFor="signup-skills-wanted"
+            className="block text-slate-700 font-medium"
+          >
+            Skills you would like to learn (comma separated)
+          </label>
+          <input
+            id="signup-skills-wanted"
+            type="text"
+            value={signUpFormData.skillsWanted.join(", ")}
+            onChange={(e) =>
+              setSignUpFormData({
+                ...signUpFormData,
+                skillsWanted: e.target.value
+                  .split(",")
+                  .map((skill) => skill.trim()),
+              })
+            }
+            placeholder="Skill1, Skill2, Skill3"
+            className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
+          />
+        </div>
         <div className="pt-2">
           <button
             type="submit"

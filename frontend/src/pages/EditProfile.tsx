@@ -43,8 +43,8 @@ const EditProfile: React.FC = () => {
         lastName: user?.data?.lastName || "",
         bio: user?.data?.bio || "",
         experience: user?.data?.experience || "",
-        skillsOffered: formatSkills(user.data.skillsOffered),
-        skillsWanted: formatSkills(user.data.skillsWanted),
+        skillsOffered: formatSkills(user.data?.skillsOffered),
+        skillsWanted: formatSkills(user.data?.skillsWanted),
       });
     }
   }, [user]);
@@ -63,7 +63,6 @@ const EditProfile: React.FC = () => {
     e.preventDefault();
 
     try {
-      // Process the skills arrays before sending
       const updatedData = {
         ...formData,
         skillsOffered: formData.skillsOffered
@@ -80,7 +79,13 @@ const EditProfile: React.FC = () => {
           : [],
       };
 
-      console.log("Sending updated data:", updatedData);
+      if (
+        !updatedData.skillsOffered.length &&
+        !updatedData.skillsWanted.length
+      ) {
+        toast.error("Please provide at least one skill offered or wanted");
+        return;
+      }
 
       const response = await axios.patch(
         `${BASE_URL}/profile/edit`,

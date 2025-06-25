@@ -12,7 +12,16 @@ const authRouter = Express.Router();
 
 authRouter.post("/signup", async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role, experience } = req.body;
+    const {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      experience,
+      skillsOffered,
+      skillsWanted,
+    } = req.body;
     validateSignupData(req);
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -22,6 +31,12 @@ authRouter.post("/signup", async (req, res) => {
       experience: lodash.toLower(experience),
       email: lodash.toLower(email),
       password: hashedPassword,
+      skillsOffered: skillsOffered.map((skill: string) =>
+        lodash.toLower(skill.trim())
+      ),
+      skillsWanted: skillsWanted.map((skill: string) =>
+        lodash.toLower(skill.trim())
+      ),
     });
 
     const savedUser = await user.save();

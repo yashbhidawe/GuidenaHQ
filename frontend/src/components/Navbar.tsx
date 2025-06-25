@@ -10,7 +10,7 @@ const Navbar = () => {
   return (
     <div>
       <nav>
-        <ul className="flex justify-between bg-gray-800 p-4 text-white">
+        <ul className="flex justify-between bg-deep-teal p-4 text-white">
           <li className="text-lg font-bold">GuidenaHQ</li>
           <li className="hover:text-gray-400">
             <a href="/">Home</a>
