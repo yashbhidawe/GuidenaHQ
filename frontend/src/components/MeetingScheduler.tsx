@@ -53,6 +53,7 @@ const MeetingScheduler = ({ receiverId }: ScheduleMeetingProps) => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
+            placeholder="Enter meeting title"
             className="w-full p-2 border rounded"
             required
           />
@@ -65,6 +66,7 @@ const MeetingScheduler = ({ receiverId }: ScheduleMeetingProps) => {
             type="datetime-local"
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
+            placeholder="Select date and time"
             className="w-full p-2 border rounded"
             min={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
             required
