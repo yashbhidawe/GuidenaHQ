@@ -125,7 +125,6 @@ const Auth = () => {
                 <Button variant="link" className="p-0 h-auto text-xs underline">
                   Privacy Policy
                 </Button>
-                . We protect your data with industry-standard security.
               </p>
             </CardContent>
           </Card>

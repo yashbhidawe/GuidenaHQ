@@ -52,8 +52,6 @@ meetingRouter.get(
   }
 );
 
-// ...existing code...
-
 meetingRouter.delete(
   "/meetings/:meetingId",
   authMiddleware,

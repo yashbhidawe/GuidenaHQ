@@ -198,7 +198,6 @@ const SignupForm: React.FC<SignupFormProps> = ({
             className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
           />
         </div>
-        {/* skillsOffered */}
         <div className="space-y-2">
           <label
             htmlFor="signup-skills-offered"
@@ -218,11 +217,10 @@ const SignupForm: React.FC<SignupFormProps> = ({
                   .map((skill) => skill.trim()),
               })
             }
-            placeholder="Skill1, Skill2, Skill3"
+            placeholder="eg. React, Javascript, Firebase"
             className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
           />
         </div>
-        {/* skillsWanted */}
 
         <div className="space-y-2">
           <label
@@ -243,7 +241,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
                   .map((skill) => skill.trim()),
               })
             }
-            placeholder="Skill1, Skill2, Skill3"
+            placeholder="eg. FastAPI, Django, Laravel"
             className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
           />
         </div>
