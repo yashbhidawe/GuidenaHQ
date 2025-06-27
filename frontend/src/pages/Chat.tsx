@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useSelector } from "react-redux";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Socket } from "socket.io-client";
 import { DefaultEventsMap } from "@socket.io/component-emitter";
 import axios from "axios";
 import { format } from "date-fns";
-import { Send, ArrowLeft, Loader2 } from "lucide-react";
+import { Send, ArrowLeft, Loader2, ClockPlus, Video } from "lucide-react";
 
 import {
   Card,
@@ -31,6 +31,12 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import MeetingScheduler from "@/components/MeetingScheduler";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip";
 
 const Chat = () => {
   const { receiverId } = useParams();
@@ -53,7 +59,7 @@ const Chat = () => {
     if (user?.data?._id) {
       setUserId(user.data._id);
     } else {
-      toast.error("No userID found");
+      console.error("No userID found");
     }
   }, [user]);
 
@@ -136,7 +142,7 @@ const Chat = () => {
 
   useEffect(() => {
     if (!userId) {
-      toast.error("No userID found");
+      console.error("No userID found");
       return;
     }
 
@@ -199,6 +205,12 @@ const Chat = () => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
 
+  const navigate = useNavigate();
+  const joinMeeting = (receiverId: string) => {
+    alert(`Sure, you wanna start a meeting now with ${receiverName}?`);
+    navigate(`/meet/${receiverId}`);
+  };
+
   return (
     <Card className="flex flex-col h-screen border-none rounded-none">
       <CardHeader className="bg-deep-teal text-off-white py-3 px-4 flex flex-row items-center space-y-0 sticky top-0 z-10">
@@ -211,23 +223,56 @@ const Chat = () => {
             <ArrowLeft className="h-5 w-5" />
           </Button>
         </Link>
-        <div className="flex items-center gap-3">
-          <Avatar className="h-8 w-8 bg-light-teal">
-            <AvatarFallback className="text-deep-teal font-medium text-sm">
-              {receiverInitials}
-            </AvatarFallback>
-          </Avatar>
-          <div>
-            <h2 className="font-semibold text-lg">{receiverName || "Chat"}</h2>
+        <div className="flex items-center justify-between w-full gap-3">
+          <div className="flex items-center gap-3">
+            <Avatar className="h-8 w-8 bg-light-teal">
+              <AvatarFallback className="text-deep-teal font-medium text-sm">
+                {receiverInitials}
+              </AvatarFallback>
+            </Avatar>
+            <div>
+              <h2 className="font-semibold text-lg">
+                {receiverName || "Chat"}
+              </h2>
+            </div>
           </div>
-          <div>
+          <div className="flex items-center gap-4">
             <Drawer>
               <DrawerTitle className="hidden">Meeting Scheduler</DrawerTitle>
-              <DrawerTrigger>Open</DrawerTrigger>
+              <DrawerTrigger className="cursor-pointer">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="text-off-white hover:bg-medium-teal">
+                        <ClockPlus className="h-5 w-5 cursor-pointer" />
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs text-black bg-accent rounded-md p-2 cursor-pointer">
+                        Schedule a meeting with {receiverName}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </DrawerTrigger>
               <DrawerContent>
                 <MeetingScheduler receiverId={receiverId!} />
               </DrawerContent>
             </Drawer>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="" onClick={() => joinMeeting(receiverId!)}>
+                    <Video className="h-5 w-5 text-off-white hover:text-medium-teal cursor-pointer" />
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs text-black bg-accent rounded-md p-2 cursor-pointer">
+                    Start a metting with {receiverName}, now!
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
       </CardHeader>

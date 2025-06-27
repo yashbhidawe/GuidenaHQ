@@ -54,7 +54,7 @@ const MeetingScheduler = ({ receiverId }: ScheduleMeetingProps) => {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="Enter meeting title"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-medium-teal"
             required
           />
         </div>
@@ -67,7 +67,7 @@ const MeetingScheduler = ({ receiverId }: ScheduleMeetingProps) => {
             value={dateTime}
             onChange={(e) => setDateTime(e.target.value)}
             placeholder="Select date and time"
-            className="w-full p-2 border rounded"
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-medium-teal"
             min={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
             required
           />
@@ -77,7 +77,7 @@ const MeetingScheduler = ({ receiverId }: ScheduleMeetingProps) => {
         </div>
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          className="w-full bg-medium-teal text-white py-2 rounded hover:bg-deep-teal"
         >
           Schedule Meeting
         </button>
