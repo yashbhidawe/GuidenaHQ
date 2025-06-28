@@ -10,8 +10,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, LogOut, Edit, Search } from "lucide-react";
+import { User, LogOut, Edit, Search, User2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -65,7 +66,7 @@ const Navbar = () => {
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <Input
                 type="text"
-                placeholder="Search..."
+                placeholder="Search with skills or name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/15 focus:border-white/40 transition-all"
@@ -74,21 +75,20 @@ const Navbar = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
-            <a
-              href="/"
+            <Link
+              to="/mentorships"
               className="text-white/90 hover:text-white text-sm font-medium transition-colors"
             >
-              Home
-            </a>
-            <a
-              href="/requests"
+              Chats
+            </Link>
+            <Link
+              to="/requests"
               className="text-white/90 hover:text-white text-sm font-medium transition-colors"
             >
               Requests
-            </a>
+            </Link>
           </div>
 
-          {/* User Profile Menu */}
           <div className="flex items-center">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
@@ -124,13 +124,22 @@ const Navbar = () => {
                 </div>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
-                  <a
-                    href="/profile/edit"
+                  <Link
+                    to={`/profile/${user._id}`}
+                    className="flex items-center cursor-pointer"
+                  >
+                    <User2 className="w-4 h-4" />
+                    <span>Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link
+                    to="/profile/edit"
                     className="flex items-center cursor-pointer"
                   >
                     <Edit className="mr-2 h-4 w-4" />
                     <span>Edit Profile</span>
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -144,7 +153,6 @@ const Navbar = () => {
               </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Mobile Menu for Navigation & Search */}
             <div className="md:hidden ml-2">
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
@@ -174,7 +182,7 @@ const Navbar = () => {
                       <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
                       <Input
                         type="text"
-                        placeholder="Search..."
+                        placeholder="Search with skills or name..."
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
                         className="pl-10"
