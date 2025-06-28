@@ -50,11 +50,7 @@ userRouter.get(
       const userId = req.params.id;
       const loggedInUser = req.user;
 
-      console.log("Profile route - userId param:", userId);
-      console.log("Profile route - loggedInUser:", loggedInUser?._id);
-
       if (!mongoose.Types.ObjectId.isValid(userId)) {
-        console.log("Invalid ObjectId format");
         res.status(400).json({
           message: "Invalid user ID format",
         });
@@ -62,7 +58,6 @@ userRouter.get(
       }
 
       const userProfile = await User.findById(userId).select("-password");
-      console.log("Found user profile:", !!userProfile);
 
       if (!userProfile) {
         res.status(404).json({
@@ -74,7 +69,6 @@ userRouter.get(
       const isOwnProfile = loggedInUser?._id.equals(
         new mongoose.Types.ObjectId(userId)
       );
-      console.log("Is own profile:", isOwnProfile);
 
       res.json({
         message: "User found",
