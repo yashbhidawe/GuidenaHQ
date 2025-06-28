@@ -8,11 +8,14 @@ import { addUser } from "@/store/slices/userSlice";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "@/components/Loader";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const EditProfile: React.FC = () => {
   const user = useSelector((appStore: RootState) => appStore.user);
-  console.log("User data in EditProfile:", user);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -24,6 +27,7 @@ const EditProfile: React.FC = () => {
     skillsOffered: string;
     skillsWanted: string;
   }
+
   const [formData, setFormData] = useState<FormData>({
     firstName: "",
     lastName: "",
@@ -32,12 +36,13 @@ const EditProfile: React.FC = () => {
     skillsOffered: "",
     skillsWanted: "",
   });
+
   const formatSkills = (skills: string[] | undefined): string => {
     return Array.isArray(skills) ? skills.join(", ") : "";
   };
+
   useEffect(() => {
     if (user) {
-      console.log("Setting form data from user:", user);
       setFormData({
         firstName: user?.data?.firstName || "",
         lastName: user?.data?.lastName || "",
@@ -93,11 +98,8 @@ const EditProfile: React.FC = () => {
         { withCredentials: true }
       );
 
-      console.log("Profile updated:", response.data);
       toast.success("Profile updated successfully");
-
       dispatch(addUser(response.data));
-
       navigate(`/profile/${user?.data._id}`);
     } catch (err) {
       console.error("Update failed:", err);
@@ -108,82 +110,122 @@ const EditProfile: React.FC = () => {
   if (!user) return <Loader />;
 
   return (
-    <div className="edit-profile-container">
-      <h2>Edit Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="firstName">First Name</label>
-          <input
-            id="firstName"
-            type="text"
-            name="firstName"
-            value={formData.firstName}
-            onChange={handleChange}
-            placeholder="First Name"
-          />
-        </div>
+    <div className="max-w-2xl mx-auto p-4">
+      <Card className="border-light-teal shadow-lg">
+        <CardHeader className="bg-gradient-to-r from-medium-teal to-deep-teal text-white rounded-t-lg">
+          <CardTitle className="text-2xl font-bold">Edit Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="p-6">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label
+                  htmlFor="firstName"
+                  className="text-deep-teal font-medium"
+                >
+                  First Name
+                </Label>
+                <Input
+                  id="firstName"
+                  name="firstName"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  placeholder="Enter first name"
+                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="lastName"
+                  className="text-deep-teal font-medium"
+                >
+                  Last Name
+                </Label>
+                <Input
+                  id="lastName"
+                  name="lastName"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  placeholder="Enter last name"
+                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                />
+              </div>
+            </div>
 
-        <div>
-          <label htmlFor="lastName">Last Name</label>
-          <input
-            id="lastName"
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            placeholder="Last Name"
-          />
-        </div>
+            <div className="space-y-2">
+              <Label htmlFor="bio" className="text-deep-teal font-medium">
+                Bio
+              </Label>
+              <Textarea
+                id="bio"
+                name="bio"
+                value={formData.bio}
+                onChange={handleChange}
+                placeholder="Tell us about yourself..."
+                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal min-h-[100px]"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="bio">Bio</label>
-          <textarea
-            id="bio"
-            name="bio"
-            value={formData.bio}
-            onChange={handleChange}
-            placeholder="Bio"
-          />
-        </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="experience"
+                className="text-deep-teal font-medium"
+              >
+                Experience
+              </Label>
+              <Input
+                id="experience"
+                name="experience"
+                value={formData.experience}
+                onChange={handleChange}
+                placeholder="Years of experience or expertise level"
+                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="experience">Experience</label>
-          <input
-            id="experience"
-            type="text"
-            name="experience"
-            value={formData.experience}
-            onChange={handleChange}
-            placeholder="Experience"
-          />
-        </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="skillsOffered"
+                className="text-deep-teal font-medium"
+              >
+                Skills Offered
+              </Label>
+              <Input
+                id="skillsOffered"
+                name="skillsOffered"
+                value={formData.skillsOffered}
+                onChange={handleChange}
+                placeholder="React, Node.js, Python (comma separated)"
+                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="skillsOffered">Skills Offered</label>
-          <input
-            id="skillsOffered"
-            type="text"
-            name="skillsOffered"
-            value={formData.skillsOffered}
-            onChange={handleChange}
-            placeholder="Skills Offered (comma separated)"
-          />
-        </div>
+            <div className="space-y-2">
+              <Label
+                htmlFor="skillsWanted"
+                className="text-deep-teal font-medium"
+              >
+                Skills Wanted
+              </Label>
+              <Input
+                id="skillsWanted"
+                name="skillsWanted"
+                value={formData.skillsWanted}
+                onChange={handleChange}
+                placeholder="Machine Learning, Design, Marketing (comma separated)"
+                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="skillsWanted">Skills Wanted</label>
-          <input
-            id="skillsWanted"
-            type="text"
-            name="skillsWanted"
-            value={formData.skillsWanted}
-            onChange={handleChange}
-            placeholder="Skills Wanted (comma separated)"
-          />
-        </div>
-
-        <button type="submit">Update Profile</button>
-      </form>
+            <Button
+              type="submit"
+              className="w-full bg-deep-teal hover:bg-medium-teal text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
+            >
+              Update Profile
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };
