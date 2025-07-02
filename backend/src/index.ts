@@ -11,6 +11,7 @@ import userRouter from "./routes/userRouter";
 import authRouter from "./routes/authRouter";
 import feedRouter from "./routes/feedRouter";
 import mentroshipRouter from "./routes/mentorshipRouter";
+import searchRouter from "./routes/searchRouter";
 import { BASE_URL } from "./utils/constants";
 import { initializeSocket } from "./utils/socket";
 import chatRouter from "./routes/chatRouter";
@@ -35,6 +36,7 @@ app.use("/", feedRouter);
 app.use("/", chatRouter);
 app.use("/", mentroshipRouter);
 app.use("/", meetingRouter);
+app.use("/", searchRouter);
 
 app.use(passport.initialize());
 
