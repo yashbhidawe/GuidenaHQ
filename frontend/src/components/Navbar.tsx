@@ -10,22 +10,12 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { User, LogOut, Edit, Search, User2 } from "lucide-react";
-import { Input } from "@/components/ui/input";
+import { User, LogOut, Edit, User2 } from "lucide-react";
 import { Link } from "react-router-dom";
+import SearchComponent from "./SearchComponent";
 
 const Navbar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/search?q=${encodeURIComponent(
-        searchQuery.trim()
-      )}`;
-    }
-  };
 
   const handleLogout = async () => {
     try {
@@ -62,16 +52,7 @@ const Navbar = () => {
           </a>
 
           <div className="flex-1 max-w-lg mx-8 hidden md:block">
-            <form onSubmit={handleSearch} className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input
-                type="text"
-                placeholder="Search with skills or name..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/60 focus:bg-white/15 focus:border-white/40 transition-all"
-              />
-            </form>
+            <SearchComponent />
           </div>
 
           <div className="hidden md:flex items-center space-x-6 flex-shrink-0">
@@ -178,16 +159,7 @@ const Navbar = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-64">
                   <div className="p-2">
-                    <form onSubmit={handleSearch} className="relative">
-                      <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                      <Input
-                        type="text"
-                        placeholder="Search with skills or name..."
-                        value={searchQuery}
-                        onChange={(e) => setSearchQuery(e.target.value)}
-                        className="pl-10"
-                      />
-                    </form>
+                    <SearchComponent />
                   </div>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem asChild>
