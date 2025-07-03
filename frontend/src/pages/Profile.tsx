@@ -26,13 +26,9 @@ const Profile = () => {
   const getUserProfile = async () => {
     setIsLoading(true);
     try {
-      console.log("Fetching profile for user ID:", userID);
-
       const response = await axios.get(`${BASE_URL}/profile/${userID}`, {
         withCredentials: true,
       });
-
-      console.log("Profile response:", response.data);
 
       if (response.data.data) {
         setUser(response.data.data);
