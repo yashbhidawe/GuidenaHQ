@@ -65,7 +65,6 @@ const SearchComponent = () => {
       .finally(() => setLoading(false));
   }, [debouncedQuery]);
 
-  // Hide dropdown when clicking outside
   useEffect(() => {
     function handleClick(e: MouseEvent) {
       if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
