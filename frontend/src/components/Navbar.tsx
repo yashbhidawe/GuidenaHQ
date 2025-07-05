@@ -41,7 +41,11 @@ const Navbar = () => {
             href="/"
             className="text-white text-lg font-semibold hover:text-white/80 transition-colors flex-shrink-0"
           >
-            GuidenaHQ
+            <img
+              src="/Logo.png"
+              alt="Guidena Logo"
+              className="h-28 w-auto mr-2 filter brightness-0 invert"
+            />
           </a>
 
           <div className="flex-1 max-w-lg mx-8 hidden md:block">
