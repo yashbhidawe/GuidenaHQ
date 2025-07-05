@@ -72,17 +72,14 @@ const Mentorships = () => {
   }, []);
 
   return (
-    <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <div className="flex items-center justify-between w-full p-4 bg-deep-teal text-white  rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold">Active Mentorships</h2>
-        <Button
-          variant="outline"
-          onClick={getConnections}
-          disabled={isLoading.connections}
-          className="text-black"
-        >
-          Refresh
-        </Button>
+    <div className="max-w-6xl mx-auto p-6 space-y-8 text-center">
+      <div className="mb-8">
+        <h1 className="text-4xl font-bold text-deep-teal mb-2">
+          Your Connections
+        </h1>
+        <p className="text-medium-teal text-lg">
+          Manage your connections and chat with them!
+        </p>
       </div>
 
       {isLoading.connections ? (
