@@ -73,12 +73,13 @@ const Mentorships = () => {
 
   return (
     <div className="max-w-6xl mx-auto p-6 space-y-8">
-      <div className="flex items-center justify-between w-full p-4 bg-gray-400  rounded-lg shadow-lg">
+      <div className="flex items-center justify-between w-full p-4 bg-deep-teal text-white  rounded-lg shadow-lg">
         <h2 className="text-3xl font-bold">Active Mentorships</h2>
         <Button
           variant="outline"
           onClick={getConnections}
           disabled={isLoading.connections}
+          className="text-black"
         >
           Refresh
         </Button>

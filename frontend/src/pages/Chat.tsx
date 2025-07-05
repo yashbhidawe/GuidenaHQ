@@ -37,6 +37,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
+import GuidenaAIC from "@/components/GuidenaAIC";
 
 const Chat = () => {
   const { receiverId } = useParams();
@@ -213,8 +214,8 @@ const Chat = () => {
 
   return (
     <Card className="flex flex-col h-screen border-none rounded-none">
-      <CardHeader className="bg-deep-teal text-off-white py-3 px-4 flex flex-row items-center space-y-0 sticky top-0 z-10">
-        <Link to="/requests" className="mr-3">
+      <CardHeader className="bg-deep-teal text-off-white py-3 px-4 flex flex-row items-center space-y-0 sticky top-12 z-10">
+        <Link to="/mentorships" className="mr-3">
           <Button
             variant="ghost"
             size="icon"
@@ -236,7 +237,30 @@ const Chat = () => {
               </h2>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-4 md:gap-6">
+            <Drawer>
+              <DrawerTitle className="hidden">Ask Guidena</DrawerTitle>
+              <DrawerTrigger className="cursor-pointer">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="text-off-white hover:text-white transition-colors">
+                        Ask Guidena
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p className="text-xs text-black bg-accent rounded-md p-2 cursor-pointer">
+                        Ask your doubts to GuidenaAI{" "}
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </DrawerTrigger>
+              <DrawerContent>
+                {" "}
+                <GuidenaAIC />
+              </DrawerContent>
+            </Drawer>
             <Drawer>
               <DrawerTitle className="hidden">Meeting Scheduler</DrawerTitle>
               <DrawerTrigger className="cursor-pointer">

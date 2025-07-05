@@ -114,7 +114,7 @@ const GuidenaAIC = ({ disableAutoScroll = false }) => {
   };
 
   return (
-    <div className="min-h-screen bg-off-white">
+    <div className="min-h-screen bg-off-white ">
       <div className="max-w-4xl mx-auto flex flex-col h-[calc(100vh-120px)]">
         <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
@@ -187,7 +187,7 @@ const GuidenaAIC = ({ disableAutoScroll = false }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="border-t border-light-teal/30 p-4 bg-off-white">
+        <div className="border-t border-light-teal/30 p-4 bg-off-white mb-24 md:mb-8">
           <div className="flex gap-2">
             <div className="flex-1 relative">
               <textarea
@@ -207,7 +207,7 @@ const GuidenaAIC = ({ disableAutoScroll = false }) => {
             <button
               onClick={handleSubmit}
               disabled={isLoading || !inputValue.trim()}
-              className="px-4 py-2 bg-deep-teal text-off-white rounded-lg hover:bg-deep-teal/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 self-end"
+              className="px-4 py-2 bg-deep-teal text-off-white rounded-lg hover:bg-deep-teal/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2 self-end mb-20 md:mb-8"
             >
               {isLoading ? (
                 <Loader2 className="w-4 h-4 animate-spin" />
