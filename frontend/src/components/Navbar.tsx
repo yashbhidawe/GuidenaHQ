@@ -167,8 +167,8 @@ const Navbar = () => {
                     </div>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem asChild>
-                      <a href="/" className="cursor-pointer">
-                        Home
+                      <a href="/mentorships" className="cursor-pointer">
+                        Chat
                       </a>
                     </DropdownMenuItem>
                     <DropdownMenuItem asChild>
