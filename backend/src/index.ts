@@ -18,6 +18,7 @@ import chatRouter from "./routes/chatRouter";
 import meetingRouter from "./routes/meetingRouter";
 import "./config/passport";
 import passport from "passport";
+import aiRouter from "./routes/aiRouter";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -37,6 +38,7 @@ app.use("/", chatRouter);
 app.use("/", mentroshipRouter);
 app.use("/", meetingRouter);
 app.use("/", searchRouter);
+app.use("/", aiRouter);
 
 app.use(passport.initialize());
 
