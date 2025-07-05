@@ -13,6 +13,7 @@ import Meet from "./pages/Meet";
 import Meetings from "./pages/Meetings";
 import Mentorships from "./pages/Mentorships";
 import NotFound from "./pages/NotFound";
+import GuidenaAI from "./pages/GuidenaAI";
 
 const AppRouters = () => {
   return (
@@ -28,6 +29,7 @@ const AppRouters = () => {
           <Route path="/meet/:receiverId" element={<Meet />} />
           <Route path="/meetings" element={<Meetings />} />
           <Route path="/mentorships" element={<Mentorships />} />
+          <Route path="/guidena-ai" element={<GuidenaAI />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
