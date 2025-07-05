@@ -61,6 +61,12 @@ const Navbar = () => {
             >
               Requests
             </Link>
+            <Link
+              to="/guidena-ai"
+              className="text-white/90 hover:text-white text-sm font-medium transition-colors"
+            >
+              Talk to GuidenaAI
+            </Link>
           </div>
 
           {user && (
@@ -168,6 +174,11 @@ const Navbar = () => {
                     <DropdownMenuItem asChild>
                       <a href="/requests" className="cursor-pointer">
                         Requests
+                      </a>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem asChild>
+                      <a href="/gidena-ai" className="cursor-pointer">
+                        Talk to GuidenaAI
                       </a>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
