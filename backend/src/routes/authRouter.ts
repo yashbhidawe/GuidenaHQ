@@ -7,55 +7,109 @@ import passport from "passport";
 import { AuthenticatedRequest } from "../middleware/auth";
 import { createAuthHandler } from "../types/handlers";
 import { BASE_URL } from "../utils/constants";
+import multer from "multer";
+import cloudinary from "../config/cloudinary";
+import { UploadApiErrorResponse, UploadResponseCallback } from "cloudinary";
 
 const authRouter = Express.Router();
 
-authRouter.post("/signup", async (req, res) => {
-  try {
-    const {
-      firstName,
-      lastName,
-      email,
-      password,
-      role,
-      experience,
-      skillsOffered,
-      skillsWanted,
-    } = req.body;
-    validateSignupData(req);
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = new User({
-      firstName: lodash.capitalize(firstName),
-      lastName: lodash.capitalize(lastName),
-      role: lodash.toLower(role),
-      experience: lodash.toLower(experience),
-      email: lodash.toLower(email),
-      password: hashedPassword,
-      skillsOffered: skillsOffered.map((skill: string) =>
-        lodash.toLower(skill.trim())
-      ),
-      skillsWanted: skillsWanted.map((skill: string) =>
-        lodash.toLower(skill.trim())
-      ),
-    });
-
-    const savedUser = await user.save();
-    const token = savedUser.getJWT();
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,
-      sameSite: "none",
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
-    res.json({ message: "User created successfully", data: savedUser });
-  } catch (error) {
-    const errorMessage =
-      error instanceof Error
-        ? error.message
-        : "Something went wrong while signing up";
-    res.status(401).json({ message: errorMessage });
-  }
+const storage = multer.memoryStorage();
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.startsWith("image/")) {
+      cb(null, true);
+    } else {
+      cb(new Error("Not an image! Please upload only images.") as any, false);
+    }
+  },
 });
+
+authRouter.post(
+  "/signup",
+  upload.single("profilePicture"),
+  async (req, res) => {
+    try {
+      const {
+        firstName,
+        lastName,
+        email,
+        password,
+        role,
+        experience,
+        skillsOffered,
+        skillsWanted,
+      } = req.body;
+      validateSignupData(req);
+
+      let profilePictureUrl = null;
+
+      if (req.file) {
+        const result = await new Promise<{ secure_url: string }>(
+          (resolve, reject) => {
+            cloudinary.uploader
+              .upload_stream(
+                {
+                  folder: "profile_pictures",
+                  transformation: [
+                    { width: 400, height: 400, crop: "fill" },
+                    { quality: "auto" },
+                    { format: "auto" },
+                  ],
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  if (!result || !("secure_url" in result)) {
+                    return reject(new Error("upload failed"));
+                  }
+
+                  resolve(result as { secure_url: string });
+                }
+              )
+              .end(req.file?.buffer);
+          }
+        );
+
+        profilePictureUrl = result.secure_url;
+      }
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const user = new User({
+        firstName: lodash.capitalize(firstName),
+        lastName: lodash.capitalize(lastName),
+        role: lodash.toLower(role),
+        experience: lodash.toLower(experience),
+        email: lodash.toLower(email),
+        password: hashedPassword,
+        avatar: profilePictureUrl,
+        skillsOffered: skillsOffered.map((skill: string) =>
+          lodash.toLower(skill.trim())
+        ),
+        skillsWanted: skillsWanted.map((skill: string) =>
+          lodash.toLower(skill.trim())
+        ),
+      });
+
+      const savedUser = await user.save();
+      const token = savedUser.getJWT();
+      res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+      res.json({ message: "User created successfully", data: savedUser });
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error
+          ? error.message
+          : "Something went wrong while signing up";
+      res.status(401).json({ message: errorMessage });
+    }
+  }
+);
 
 authRouter.post("/login", async (req, res) => {
   try {
