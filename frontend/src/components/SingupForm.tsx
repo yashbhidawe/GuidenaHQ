@@ -19,6 +19,8 @@ interface SignUpFormData {
   password: string;
   skillsOffered: string[];
   skillsWanted: string[];
+  avatar?: File | null;
+  previewUrl?: string;
 }
 const SignupForm: React.FC<SignupFormProps> = ({
   isLoading,
@@ -32,10 +34,38 @@ const SignupForm: React.FC<SignupFormProps> = ({
     role: "mentee",
     experience: "",
     password: "",
+    avatar: null,
+    previewUrl: "",
     skillsOffered: [],
     skillsWanted: [],
   });
 
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        toast.error("File size must be less than 5MB!");
+        return;
+      }
+      if (!file.type.startsWith("image/")) {
+        toast.error("Invalid file type");
+        return;
+      }
+      setSignUpFormData((prev) => ({
+        ...prev,
+        avatar: file,
+        previewUrl: URL.createObjectURL(file),
+      }));
+    }
+  };
+
+  //   const removeImage = () => {
+  //   setSignUpFormData((prev) => ({
+  //     ...prev,
+  //     avatar: null,
+  //     previewUrl: "",
+  //   }));
+  // };
   const handleSignup = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -49,8 +79,32 @@ const SignupForm: React.FC<SignupFormProps> = ({
         return;
       }
       setIsLoading(true);
-      const response = await axios.post(`${BASE_URL}/signup`, signUpFormData, {
+
+      const formData = new FormData();
+      formData.append("firstName", signUpFormData.firstName);
+      formData.append("lastName", signUpFormData.lastName);
+      formData.append("email", signUpFormData.email);
+      formData.append("role", signUpFormData.role);
+      formData.append("experience", signUpFormData.experience);
+      formData.append("password", signUpFormData.password);
+      formData.append(
+        "skillsOffered",
+        JSON.stringify(signUpFormData.skillsOffered)
+      );
+      formData.append(
+        "skillsWanted",
+        JSON.stringify(signUpFormData.skillsWanted)
+      );
+
+      // Add profile picture if it exists
+      if (signUpFormData.avatar) {
+        formData.append("avatar", signUpFormData.avatar);
+      }
+      const response = await axios.post(`${BASE_URL}/signup`, formData, {
         withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       if (response.status === 200) {
         toast.success("User created successfully");
@@ -65,6 +119,8 @@ const SignupForm: React.FC<SignupFormProps> = ({
         role: "both",
         experience: "",
         password: "",
+        previewUrl: "",
+        avatar: null,
         skillsOffered: [],
         skillsWanted: [],
       });
@@ -73,16 +129,13 @@ const SignupForm: React.FC<SignupFormProps> = ({
         error instanceof Error ? error.message : "Unauthorized";
       console.log(errorMessage);
       toast.error(errorMessage);
+      setIsLoading(false);
     }
   };
+
   return (
     <div>
-      <form
-        className="space-y-4"
-        onSubmit={(e) => {
-          handleSignup(e);
-        }}
-      >
+      <form className="space-y-4" onSubmit={handleSignup}>
         <div className="space-y-2 flex">
           <span>
             {" "}
@@ -129,8 +182,31 @@ const SignupForm: React.FC<SignupFormProps> = ({
             />
           </span>
         </div>
-        <div className="space-y-2"></div>
-
+        {signUpFormData.previewUrl ? (
+          <div className="relative">
+            <img
+              src={signUpFormData.previewUrl}
+              alt="Profile Preview"
+              className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+            />
+          </div>
+        ) : (
+          <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center border-2 border-gray-300"></div>
+        )}
+        <div className="space-y-2">
+          <label htmlFor="profilePicture" className="mt-2 cursor-pointer">
+            <span className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+              Upload Photo
+            </span>
+            <input
+              id="profilePicture"
+              type="file"
+              accept="image/*"
+              onChange={handleFileChange}
+              className="hidden"
+            />
+          </label>
+        </div>
         <div className="space-y-2">
           <label
             htmlFor="signup-email"

@@ -28,88 +28,102 @@ const upload = multer({
   },
 });
 
-authRouter.post(
-  "/signup",
-  upload.single("profilePicture"),
-  async (req, res) => {
-    try {
-      const {
-        firstName,
-        lastName,
-        email,
-        password,
-        role,
-        experience,
-        skillsOffered,
-        skillsWanted,
-      } = req.body;
-      validateSignupData(req);
+authRouter.post("/signup", upload.single("avatar"), async (req, res) => {
+  try {
+    let {
+      firstName,
+      lastName,
+      email,
+      password,
+      role,
+      experience,
+      skillsOffered,
+      skillsWanted,
+    } = req.body;
 
-      let profilePictureUrl = null;
-
-      if (req.file) {
-        const result = await new Promise<{ secure_url: string }>(
-          (resolve, reject) => {
-            cloudinary.uploader
-              .upload_stream(
-                {
-                  folder: "profile_pictures",
-                  transformation: [
-                    { width: 400, height: 400, crop: "fill" },
-                    { quality: "auto" },
-                    { format: "auto" },
-                  ],
-                },
-                (error, result) => {
-                  if (error) reject(error);
-                  if (!result || !("secure_url" in result)) {
-                    return reject(new Error("upload failed"));
-                  }
-
-                  resolve(result as { secure_url: string });
-                }
-              )
-              .end(req.file?.buffer);
-          }
-        );
-
-        profilePictureUrl = result.secure_url;
+    if (typeof skillsOffered === "string") {
+      try {
+        skillsOffered = JSON.parse(skillsOffered);
+      } catch {
+        skillsOffered = [];
       }
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const user = new User({
-        firstName: lodash.capitalize(firstName),
-        lastName: lodash.capitalize(lastName),
-        role: lodash.toLower(role),
-        experience: lodash.toLower(experience),
-        email: lodash.toLower(email),
-        password: hashedPassword,
-        avatar: profilePictureUrl,
-        skillsOffered: skillsOffered.map((skill: string) =>
-          lodash.toLower(skill.trim())
-        ),
-        skillsWanted: skillsWanted.map((skill: string) =>
-          lodash.toLower(skill.trim())
-        ),
-      });
-
-      const savedUser = await user.save();
-      const token = savedUser.getJWT();
-      res.cookie("token", token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: "none",
-        maxAge: 7 * 24 * 60 * 60 * 1000,
-      });
-      res.json({ message: "User created successfully", data: savedUser });
-    } catch (error) {
-      const errorMessage =
-        error instanceof Error
-          ? error.message
-          : "Something went wrong while signing up";
-      res.status(401).json({ message: errorMessage });
     }
+    if (typeof skillsWanted === "string") {
+      try {
+        skillsWanted = JSON.parse(skillsWanted);
+      } catch {
+        skillsWanted = [];
+      }
+    }
+    req.body.skillsOffered = skillsOffered;
+    req.body.skillsWanted = skillsWanted;
+    validateSignupData(req);
+
+    let profilePictureUrl = null;
+
+    if (req.file) {
+      const result = await new Promise<{ secure_url: string }>(
+        (resolve, reject) => {
+          cloudinary.uploader
+            .upload_stream(
+              {
+                folder: "profile_pictures",
+                transformation: [
+                  { width: 400, height: 400, crop: "fill" },
+                  { quality: "auto" },
+                  { format: "auto" },
+                ],
+              },
+              (error, result) => {
+                if (error) reject(error);
+                if (!result || !("secure_url" in result)) {
+                  return reject(new Error("upload failed"));
+                }
+
+                resolve(result as { secure_url: string });
+              }
+            )
+            .end(req.file?.buffer);
+        }
+      );
+
+      profilePictureUrl = result.secure_url;
+      console.log("ProfileURL", profilePictureUrl);
+    }
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = new User({
+      firstName: lodash.capitalize(firstName),
+      lastName: lodash.capitalize(lastName),
+      role: lodash.toLower(role),
+      experience: lodash.toLower(experience),
+      email: lodash.toLower(email),
+      password: hashedPassword,
+      avatar: profilePictureUrl,
+      skillsOffered: skillsOffered.map((skill: string) =>
+        lodash.toLower(skill.trim())
+      ),
+      skillsWanted: skillsWanted.map((skill: string) =>
+        lodash.toLower(skill.trim())
+      ),
+    });
+
+    const savedUser = await user.save();
+    const token = savedUser.getJWT();
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "none",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+    res.json({ message: "User created successfully", data: savedUser });
+  } catch (error) {
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Something went wrong while signing up";
+    res.status(401).json({ message: errorMessage });
   }
-);
+});
 
 authRouter.post("/login", async (req, res) => {
   try {
