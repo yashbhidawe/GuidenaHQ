@@ -55,10 +55,12 @@ const userSchema = new Schema<UserInterface>(
     skillsOffered: {
       type: [String],
       default: [],
+      set: (arr: string[]) => arr.map((s) => s.toLowerCase()),
     },
     skillsWanted: {
       type: [String],
       default: [],
+      set: (arr: string[]) => arr.map((s) => s.toLowerCase()),
     },
     bio: { type: String, default: "" },
     avatar: {
