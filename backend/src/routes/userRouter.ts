@@ -5,6 +5,12 @@ import { validateEditProfileData } from "../utils/validator";
 import { User } from "../models/User";
 import mongoose from "mongoose";
 import { createAuthHandler } from "../types/handlers";
+import uploadProfilePicture from "../utils/uploadProfile";
+import multer from "multer";
+const upload = multer({
+  storage: multer.memoryStorage(),
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+});
 
 const userRouter = Express.Router();
 
@@ -90,6 +96,7 @@ userRouter.get(
 userRouter.patch(
   "/profile/edit",
   authMiddleware,
+  upload.single("avatar"), // Add multer middleware for file upload
   createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const user = req.user;
@@ -105,6 +112,7 @@ userRouter.patch(
       if (!isEditAllowed) {
         throw new Error("Invalid updates");
       }
+
       interface UserUpdates {
         firstName?: string;
         lastName?: string;
@@ -118,6 +126,26 @@ userRouter.patch(
 
       const updates = req.body as UserUpdates;
 
+      // Handle profile picture upload if file is provided
+      if (req.file) {
+        try {
+          const avatarUrl = await uploadProfilePicture(req.file);
+          updates.avatar = avatarUrl;
+          console.log("Updated ProfileURL", avatarUrl);
+        } catch (uploadError) {
+          console.error("Profile picture upload failed:", uploadError);
+          res.status(500).json({
+            message: "Profile picture upload failed",
+            error:
+              uploadError instanceof Error
+                ? uploadError.message
+                : "Unknown error",
+          });
+          return;
+        }
+      }
+
+      // Apply updates to user object
       (Object.keys(updates) as Array<keyof UserUpdates>).forEach((key) => {
         if (key in user) {
           (user as any)[key] = updates[key];
@@ -129,7 +157,7 @@ userRouter.patch(
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "unable to edit";
-      res.status(401).json({ message: errorMessage });
+      res.status(500).json({ message: errorMessage }); // Changed from 401 to 500 for server errors
     }
   })
 );
