@@ -10,6 +10,7 @@ import { BASE_URL } from "../utils/constants";
 import multer from "multer";
 import cloudinary from "../config/cloudinary";
 import { UploadApiErrorResponse, UploadResponseCallback } from "cloudinary";
+import uploadProfilePicture from "../utils/uploadProfile";
 
 const authRouter = Express.Router();
 
@@ -62,32 +63,16 @@ authRouter.post("/signup", upload.single("avatar"), async (req, res) => {
     let profilePictureUrl = null;
 
     if (req.file) {
-      const result = await new Promise<{ secure_url: string }>(
-        (resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                folder: "profile_pictures",
-                transformation: [
-                  { width: 400, height: 400, crop: "fill" },
-                  { quality: "auto" },
-                  { format: "auto" },
-                ],
-              },
-              (error, result) => {
-                if (error) reject(error);
-                if (!result || !("secure_url" in result)) {
-                  return reject(new Error("upload failed"));
-                }
-
-                resolve(result as { secure_url: string });
-              }
-            )
-            .end(req.file?.buffer);
-        }
-      );
-
-      profilePictureUrl = result.secure_url;
+      try {
+        profilePictureUrl = await uploadProfilePicture(req.file);
+      } catch (error) {
+        console.error("Error uploading profile picture:", error);
+        res.status(500).json({
+          message: "Error uploading profile picture",
+          error: error instanceof Error ? error.message : "Unknown error",
+        });
+        return;
+      }
       console.log("ProfileURL", profilePictureUrl);
     }
     const hashedPassword = await bcrypt.hash(password, 10);
