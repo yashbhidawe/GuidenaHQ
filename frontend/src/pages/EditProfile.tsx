@@ -119,110 +119,156 @@ const EditProfile: React.FC = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label
-                  htmlFor="firstName"
-                  className="text-deep-teal font-medium"
-                >
-                  First Name
+                <div className="flex items-center space-x-4">
+                  <img
+                    src={user?.data?.avatar || "/default-avatar.png"}
+                    alt="Profile"
+                    className="w-16 h-16 rounded-full border border-light-teal"
+                  />
+                  <Button
+                    asChild
+                    className="bg-light-teal hover:bg-medium-teal text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
+                  >
+                    <label htmlFor="profilePicture" className="cursor-pointer">
+                      Change Picture
+                    </label>
+                  </Button>
+                  <input
+                    type="file"
+                    id="profilePicture"
+                    name="profilePicture"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={async (e) => {
+                      const file = e.target.files?.[0];
+                      if (file) {
+                        const formData = new FormData();
+                        formData.append("avatar", file);
+                        try {
+                          const response = await axios.patch(
+                            `${BASE_URL}/profile/edit`,
+                            formData,
+                            { withCredentials: true }
+                          );
+                          dispatch(addUser(response.data));
+                          toast.success("Profile picture updated successfully");
+                        } catch (error) {
+                          console.error(
+                            "Error uploading profile picture:",
+                            error
+                          );
+                          toast.error("Failed to update profile picture");
+                        }
+                      }
+                    }}
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="firstName"
+                    className="text-deep-teal font-medium"
+                  >
+                    First Name
+                  </Label>
+                  <Input
+                    id="firstName"
+                    name="firstName"
+                    value={formData.firstName}
+                    onChange={handleChange}
+                    placeholder="Enter first name"
+                    className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label
+                    htmlFor="lastName"
+                    className="text-deep-teal font-medium"
+                  >
+                    Last Name
+                  </Label>
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    value={formData.lastName}
+                    onChange={handleChange}
+                    placeholder="Enter last name"
+                    className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="bio" className="text-deep-teal font-medium">
+                  Bio
                 </Label>
-                <Input
-                  id="firstName"
-                  name="firstName"
-                  value={formData.firstName}
+                <Textarea
+                  id="bio"
+                  name="bio"
+                  value={formData.bio}
                   onChange={handleChange}
-                  placeholder="Enter first name"
-                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                  placeholder="Tell us about yourself..."
+                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal min-h-[100px]"
                 />
               </div>
+
               <div className="space-y-2">
                 <Label
-                  htmlFor="lastName"
+                  htmlFor="experience"
                   className="text-deep-teal font-medium"
                 >
-                  Last Name
+                  Experience
                 </Label>
                 <Input
-                  id="lastName"
-                  name="lastName"
-                  value={formData.lastName}
+                  id="experience"
+                  name="experience"
+                  value={formData.experience}
                   onChange={handleChange}
-                  placeholder="Enter last name"
+                  placeholder="Years of experience or expertise level"
                   className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
                 />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="bio" className="text-deep-teal font-medium">
-                Bio
-              </Label>
-              <Textarea
-                id="bio"
-                name="bio"
-                value={formData.bio}
-                onChange={handleChange}
-                placeholder="Tell us about yourself..."
-                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal min-h-[100px]"
-              />
-            </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="skillsOffered"
+                  className="text-deep-teal font-medium"
+                >
+                  Skills Offered
+                </Label>
+                <Input
+                  id="skillsOffered"
+                  name="skillsOffered"
+                  value={formData.skillsOffered}
+                  onChange={handleChange}
+                  placeholder="React, Node.js, Python (comma separated)"
+                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                />
+              </div>
 
-            <div className="space-y-2">
-              <Label
-                htmlFor="experience"
-                className="text-deep-teal font-medium"
+              <div className="space-y-2">
+                <Label
+                  htmlFor="skillsWanted"
+                  className="text-deep-teal font-medium"
+                >
+                  Skills Wanted
+                </Label>
+                <Input
+                  id="skillsWanted"
+                  name="skillsWanted"
+                  value={formData.skillsWanted}
+                  onChange={handleChange}
+                  placeholder="Machine Learning, Design, Marketing (comma separated)"
+                  className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
+                />
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-deep-teal hover:bg-medium-teal text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
               >
-                Experience
-              </Label>
-              <Input
-                id="experience"
-                name="experience"
-                value={formData.experience}
-                onChange={handleChange}
-                placeholder="Years of experience or expertise level"
-                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
-              />
+                Update Profile
+              </Button>
             </div>
-
-            <div className="space-y-2">
-              <Label
-                htmlFor="skillsOffered"
-                className="text-deep-teal font-medium"
-              >
-                Skills Offered
-              </Label>
-              <Input
-                id="skillsOffered"
-                name="skillsOffered"
-                value={formData.skillsOffered}
-                onChange={handleChange}
-                placeholder="React, Node.js, Python (comma separated)"
-                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
-              />
-            </div>
-
-            <div className="space-y-2">
-              <Label
-                htmlFor="skillsWanted"
-                className="text-deep-teal font-medium"
-              >
-                Skills Wanted
-              </Label>
-              <Input
-                id="skillsWanted"
-                name="skillsWanted"
-                value={formData.skillsWanted}
-                onChange={handleChange}
-                placeholder="Machine Learning, Design, Marketing (comma separated)"
-                className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
-              />
-            </div>
-
-            <Button
-              type="submit"
-              className="w-full bg-deep-teal hover:bg-medium-teal text-white font-medium py-2 px-4 rounded-md transition-colors duration-200"
-            >
-              Update Profile
-            </Button>
           </form>
         </CardContent>
       </Card>
