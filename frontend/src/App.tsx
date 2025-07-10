@@ -14,6 +14,7 @@ import Meetings from "./pages/Meetings";
 import Mentorships from "./pages/Mentorships";
 import NotFound from "./pages/NotFound";
 import GuidenaAI from "./pages/GuidenaAI";
+import Landing from "./pages/Landing";
 
 const AppRouters = () => {
   return (
@@ -21,6 +22,7 @@ const AppRouters = () => {
       <Routes>
         <Route path="/" element={<Body />}>
           <Route index element={<Feed />} />
+          <Route path="/landing" element={<Landing />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/profile/:userID" element={<Profile />} />
