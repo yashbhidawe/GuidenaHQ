@@ -31,7 +31,7 @@ const Body = () => {
             error.response?.data?.message || "Failed to fetch user data"
           );
         }
-        navigate("/auth");
+        navigate("/landing");
       }
     };
 
