@@ -1,4 +1,5 @@
 import Hero from "@/components/Landing/Hero";
+import TargetAudience from "@/components/Landing/TargetAudience";
 import Value from "@/components/Landing/Value";
 
 const Landing = () => {
@@ -6,6 +7,7 @@ const Landing = () => {
     <div>
       <Hero />
       <Value />
+      <TargetAudience />
     </div>
   );
 };
