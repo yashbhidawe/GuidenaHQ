@@ -14,13 +14,11 @@ const Body = () => {
   const navigate = useNavigate();
   // const location = useLocation();
 
-  const userData = useSelector((appStore: RootState) => appStore.user);
+  useSelector((appStore: RootState) => appStore.user);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        if (userData) return;
-
         const res = await axios.get(`${BASE_URL}/profile`, {
           withCredentials: true,
         });
@@ -31,12 +29,12 @@ const Body = () => {
             error.response?.data?.message || "Failed to fetch user data"
           );
         }
-        navigate("/landing");
+        navigate("/auth");
       }
     };
 
     fetchUser();
-  }, [dispatch, navigate, userData]);
+  }, [dispatch, navigate]);
 
   return (
     <>
