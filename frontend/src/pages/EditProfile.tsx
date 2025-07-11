@@ -121,7 +121,10 @@ const EditProfile: React.FC = () => {
               <div className="space-y-2">
                 <div className="flex items-center space-x-4">
                   <img
-                    src={user?.data?.avatar || "/default-avatar.png"}
+                    src={
+                      user?.data?.avatar ||
+                      "https://avatar.iran.liara.run/public/boy?username=Ash"
+                    }
                     alt="Profile"
                     className="w-16 h-16 rounded-full border border-light-teal"
                   />
@@ -142,6 +145,7 @@ const EditProfile: React.FC = () => {
                     onChange={async (e) => {
                       const file = e.target.files?.[0];
                       if (file) {
+                        toast.info("Uploading profile picture...");
                         const formData = new FormData();
                         formData.append("avatar", file);
                         try {
