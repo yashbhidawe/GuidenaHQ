@@ -1,3 +1,4 @@
+import CTA from "@/components/Landing/CTA";
 import FAQ from "@/components/Landing/FAQ";
 import Hero from "@/components/Landing/Hero";
 import HowItWorks from "@/components/Landing/HowItWorks";
@@ -12,6 +13,7 @@ const Landing = () => {
       <TargetAudience />
       <HowItWorks />
       <FAQ />
+      <CTA />
     </div>
   );
 };
