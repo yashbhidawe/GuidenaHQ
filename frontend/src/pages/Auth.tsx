@@ -14,6 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { BASE_URL } from "@/utils/constants";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
@@ -30,106 +32,119 @@ const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
-      <div className="w-full max-w-lg space-y-6">
-        <div className="flex justify-center">
-          <Badge variant="outline" className="px-4 py-2 text-sm font-medium ">
-            <Sparkles className="w-4 h-4 mr-2" />
-            {isSignUp ? "Join likeminded learners" : "Welcome back"}
-          </Badge>
-        </div>
+    <div>
+      <Navbar />
+      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-background flex items-center justify-center p-4">
+        <div className="w-full max-w-lg space-y-6">
+          <div className="flex justify-center">
+            <Badge variant="outline" className="px-4 py-2 text-sm font-medium ">
+              <Sparkles className="w-4 h-4 mr-2" />
+              {isSignUp ? "Join likeminded learners" : "Welcome back"}
+            </Badge>
+          </div>
 
-        <Card className=" border-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
-          <CardHeader className="space-y-1 text-center pb-4">
-            <CardTitle className="text-3xl font-bold tracking-tight">
-              {isSignUp ? "Create your account" : "Sign in to your account"}
-            </CardTitle>
-            <CardDescription className="text-base">
-              {isSignUp
-                ? "Start your skill-sharing journey and connect with amazing people"
-                : "Welcome back! We're excited to see you again"}
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-            <Button
-              onClick={handleGoogleLogin}
-              disabled={isLoading}
-              variant="outline"
-              size="lg"
-              className="w-full h-12 font-medium text-base border-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200 group"
-            >
-              {isLoading ? (
-                <div className="flex items-center gap-3">
-                  <div className="w-5 h-5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
-                  <span>Connecting...</span>
-                </div>
-              ) : (
-                <div className="flex items-center gap-3">
-                  <FcGoogle className="w-5 h-5" />
-                  <span>Continue with Google</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </div>
-              )}
-            </Button>
-
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <Separator className="w-full" />
-              </div>
-              <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-card px-4 text-muted-foreground font-medium tracking-wider">
-                  Or continue with email
-                </span>
-              </div>
-            </div>
-            <div className="space-y-4">
-              {isSignUp ? (
-                <SignupForm
-                  isLoading={isLoading}
-                  setIsLoading={setIsLoading}
-                  setIsSignUp={setIsSignUp}
-                />
-              ) : (
-                <LoginForm isLoading={isLoading} setIsLoading={setIsLoading} />
-              )}
-            </div>
-
-            <div className="text-center pt-4">
-              <p className="text-sm text-muted-foreground mb-2">
+          <Card className=" border-0 bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60">
+            <CardHeader className="space-y-1 text-center pb-4">
+              <CardTitle className="text-3xl font-bold tracking-tight">
+                {isSignUp ? "Create your account" : "Sign in to your account"}
+              </CardTitle>
+              <CardDescription className="text-base">
                 {isSignUp
-                  ? "Already have an account?"
-                  : "Don't have an account?"}
-              </p>
-              <Button
-                variant="link"
-                onClick={() => setIsSignUp(!isSignUp)}
-                className="p-0 h-auto font-semibold text-primary hover:text-primary/80"
-              >
-                {isSignUp ? "Sign in instead" : "Create an account"}
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
+                  ? "Start your skill-sharing journey and connect with amazing people"
+                  : "Welcome back! We're excited to see you again"}
+              </CardDescription>
+            </CardHeader>
 
-        <div className="space-y-4">
-          <Card className="bg-muted/30 border-0">
-            <CardContent className="pt-4 pb-4">
-              <p className="text-xs text-center text-muted-foreground leading-relaxed">
-                By continuing, you agree to our{" "}
-                <Button variant="link" className="p-0 h-auto text-xs underline">
-                  Terms of Service
-                </Button>{" "}
-                and{" "}
-                <Button variant="link" className="p-0 h-auto text-xs underline">
-                  Privacy Policy
+            <CardContent className="space-y-6">
+              <Button
+                onClick={handleGoogleLogin}
+                disabled={isLoading}
+                variant="outline"
+                size="lg"
+                className="w-full h-12 font-medium text-base border-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200 group"
+              >
+                {isLoading ? (
+                  <div className="flex items-center gap-3">
+                    <div className="w-5 h-5 border-2 border-muted-foreground border-t-transparent rounded-full animate-spin" />
+                    <span>Connecting...</span>
+                  </div>
+                ) : (
+                  <div className="flex items-center gap-3">
+                    <FcGoogle className="w-5 h-5" />
+                    <span>Continue with Google</span>
+                    <ArrowRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                )}
+              </Button>
+
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                  <Separator className="w-full" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-card px-4 text-muted-foreground font-medium tracking-wider">
+                    Or continue with email
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {isSignUp ? (
+                  <SignupForm
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                    setIsSignUp={setIsSignUp}
+                  />
+                ) : (
+                  <LoginForm
+                    isLoading={isLoading}
+                    setIsLoading={setIsLoading}
+                  />
+                )}
+              </div>
+
+              <div className="text-center pt-4">
+                <p className="text-sm text-muted-foreground mb-2">
+                  {isSignUp
+                    ? "Already have an account?"
+                    : "Don't have an account?"}
+                </p>
+                <Button
+                  variant="link"
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  className="p-0 h-auto font-semibold text-primary hover:text-primary/80"
+                >
+                  {isSignUp ? "Sign in instead" : "Create an account"}
+                  <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
-              </p>
+              </div>
             </CardContent>
           </Card>
+
+          <div className="space-y-4">
+            <Card className="bg-muted/30 border-0">
+              <CardContent className="pt-4 pb-4">
+                <p className="text-xs text-center text-muted-foreground leading-relaxed">
+                  By continuing, you agree to our{" "}
+                  <Button
+                    variant="link"
+                    className="p-0 h-auto text-xs underline"
+                  >
+                    Terms of Service
+                  </Button>{" "}
+                  and{" "}
+                  <Button
+                    variant="link"
+                    className="p-0 h-auto text-xs underline"
+                  >
+                    Privacy Policy
+                  </Button>
+                </p>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
