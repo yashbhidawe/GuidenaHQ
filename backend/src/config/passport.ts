@@ -12,7 +12,7 @@ passport.use(
     {
       clientID: GOOGLE_CLIENT_ID,
       clientSecret: GOOGLE_CLIENT_SECRET,
-      callbackURL: "/google/redirect",
+      callbackURL: "https://guidenahq.onrender.com/google/redirect",
     },
     async (
       accessToken: string,
