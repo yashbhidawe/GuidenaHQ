@@ -21,8 +21,8 @@ const AppRouters = () => {
     <BrowserRouter>
       <Routes>
         <Route path="/landing" element={<Landing />} />
-        <Route path="/auth" element={<Auth />} />
 
+        <Route path="/auth" element={<Auth />} />
         <Route path="/" element={<Body />}>
           <Route index element={<Feed />} />
           <Route path="/requests" element={<Requests />} />
