@@ -20,10 +20,11 @@ const AppRouters = () => {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/landing" element={<Landing />} />
+        <Route path="/auth" element={<Auth />} />
+
         <Route path="/" element={<Body />}>
           <Route index element={<Feed />} />
-          <Route path="/landing" element={<Landing />} />
-          <Route path="/auth" element={<Auth />} />
           <Route path="/requests" element={<Requests />} />
           <Route path="/profile/:userID" element={<Profile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
