@@ -12,7 +12,7 @@ const CTA = () => {
           Join our growing community of learners and mentors
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
           <Link to="/auth">
             {" "}
             <button className="bg-light-teal hover:bg-light-teal/90 text-deep-teal px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-lg flex items-center justify-center gap-2">
