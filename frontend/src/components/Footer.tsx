@@ -44,7 +44,7 @@ const Footer = () => {
               <div className="flex items-center space-x-2">
                 <div className="">
                   <img
-                    src="../public/Logo.png"
+                    src="/Logo.png"
                     alt="Guidena Logo"
                     className="h-28 filter brightness-0 invert object-cover"
                   />
