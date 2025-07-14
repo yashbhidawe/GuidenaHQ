@@ -187,7 +187,7 @@ authRouter.get(
         sameSite: "lax",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: undefined,
+        domain: ".onrender.com", // This might help
       });
       console.log("✅ Cookie set successfully");
       console.log("Cookie config:", {
