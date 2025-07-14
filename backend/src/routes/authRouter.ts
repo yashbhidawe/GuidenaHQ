@@ -184,10 +184,9 @@ authRouter.get(
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
-        sameSite: "lax",
+        sameSite: "none",
         path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
-        domain: ".onrender.com", // This might help
       });
       console.log("✅ Cookie set successfully");
       console.log("Cookie config:", {
