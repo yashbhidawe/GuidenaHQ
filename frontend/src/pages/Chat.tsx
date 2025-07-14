@@ -207,9 +207,14 @@ const Chat = () => {
   };
 
   const navigate = useNavigate();
+
+  const getConsistentRoomName = (id1: string, id2: string) => {
+    return `guidenaHQ-${[id1, id2].sort().join("-")}`;
+  };
   const joinMeeting = (receiverId: string) => {
-    alert(`Sure, you wanna start a meeting now with ${receiverName}?`);
-    navigate(`/meet/${receiverId}`);
+    const roomName = getConsistentRoomName(userId, receiverId);
+
+    navigate(`/meet/${roomName}`);
   };
 
   return (

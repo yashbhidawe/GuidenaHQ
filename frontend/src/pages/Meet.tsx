@@ -2,15 +2,11 @@ import { useState, useEffect } from "react";
 import { JitsiMeeting } from "@jitsi/react-sdk";
 import { useParams } from "react-router-dom";
 import { Loader } from "../components/Loader";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/appStore";
 
 const Meet = () => {
-  const { receiverId } = useParams();
+  const { roomName } = useParams();
   const [isLoading, setIsLoading] = useState(true);
   const [isReady, setIsReady] = useState(false);
-
-  const loggedInUser = useSelector((appStore: RootState) => appStore.user);
 
   useEffect(() => {
     // Smooth transition after component mounts
@@ -18,15 +14,9 @@ const Meet = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  const getConsistentRoomName = (id1: string, id2: string) => {
-    const [a, b] = [id1, id2].sort();
-    return `guidenaHQ-${a}-${b}`;
-  };
-
-  const myId = loggedInUser!.data._id;
-  const roomName = getConsistentRoomName(myId, receiverId!);
   return (
     <div className="relative h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
+      {/* Loading Overlay */}
       <div
         className={`absolute inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-sm transition-all duration-700 ease-in-out ${
           isLoading ? "opacity-100 visible" : "opacity-0 invisible"
@@ -56,7 +46,7 @@ const Meet = () => {
         <div className="h-full w-full  overflow-hidden shadow-2xl bg-white ">
           <JitsiMeeting
             domain="meet.jit.si"
-            roomName={roomName}
+            roomName={roomName!}
             configOverwrite={{
               startWithAudioMuted: true,
               disableModeratorIndicator: false,
