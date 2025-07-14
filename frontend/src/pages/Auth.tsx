@@ -25,6 +25,7 @@ const Auth = () => {
     setIsLoading(true);
     try {
       window.location.href = `${BASE_URL}/google`;
+      setIsLoading(false);
     } catch (error) {
       console.error("Google login failed:", error);
       setIsLoading(false);
