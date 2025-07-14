@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-import { BASE_URL } from "@/utils/constants";
+import { APP_URL } from "@/utils/constants";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -24,7 +24,7 @@ const Auth = () => {
   const handleGoogleLogin = async () => {
     setIsLoading(true);
     try {
-      window.location.href = `${BASE_URL}/google`;
+      window.location.href = `${APP_URL}/google`;
     } catch (error) {
       console.error("Google login failed:", error);
       setIsLoading(false);
