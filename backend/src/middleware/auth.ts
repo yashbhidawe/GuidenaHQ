@@ -12,22 +12,11 @@ const authMiddleware = async (
   next: NextFunction
 ) => {
   try {
-    console.log("=== Auth Middleware Debug ===");
-    console.log("Request URL:", req.url);
-    console.log("Request method:", req.method);
-    console.log("Request origin:", req.get("origin"));
-    console.log("Cookie header raw:", req.get("cookie"));
-    console.log("Parsed cookies:", req.cookies);
-    console.log("Cookie keys:", Object.keys(req.cookies || {}));
-
     const token = req.cookies?.token;
-    console.log("Token exists:", !!token);
 
     if (!token) {
       console.log("token not found");
-      throw new Error("Token not found");
     }
-    console.log("✅ Token found, proceeding...");
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
