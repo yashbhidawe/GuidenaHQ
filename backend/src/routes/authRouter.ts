@@ -189,8 +189,15 @@ authRouter.get(
         maxAge: 7 * 24 * 60 * 60 * 1000,
         domain: undefined,
       });
-
-      console.log("Redirecting to:", `${BASE_URL}`); // Debug log
+      console.log("✅ Cookie set successfully");
+      console.log("Cookie config:", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        path: "/",
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+      });
+      console.log("Redirecting to:", BASE_URL);
 
       res.redirect(`${BASE_URL}`);
 
