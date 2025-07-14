@@ -182,7 +182,7 @@ authRouter.get(
 
       console.log("Token", token);
       res.cookie("token", token, {
-        httpOnly: true,
+        httpOnly: false,
         secure: true,
         sameSite: "none",
         path: "/",
@@ -190,7 +190,7 @@ authRouter.get(
       });
       console.log("✅ Cookie set successfully");
       console.log("Cookie config:", {
-        httpOnly: true,
+        httpOnly: false,
         secure: true,
         sameSite: "none",
         path: "/",
