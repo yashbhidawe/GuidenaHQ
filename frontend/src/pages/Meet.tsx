@@ -103,7 +103,7 @@ const Meet = () => {
         </div>
       </div>
 
-      <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-gray-200 px-4 py-2">
+      <div className="absolute bottom-0 left-0 right-0 bg-white/90 backdrop-blur-sm border-t border-gray-200 px-4 py-2 mt-32 opacity-90 transition-opacity duration-500 ease-in-out">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-2">
             <div className="w-2 h-2 bg-deep-teal rounded-full animate-pulse"></div>
