@@ -19,6 +19,8 @@ const Body = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
         const res = await axios.get(`${BASE_URL}/profile`, {
           withCredentials: true,
         });
