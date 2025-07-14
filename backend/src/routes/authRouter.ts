@@ -180,11 +180,14 @@ authRouter.get(
     try {
       const token = req.user.getJWT();
 
+      console.log("Token", token);
       res.cookie("token", token, {
         httpOnly: true,
         secure: true,
         sameSite: "none",
+        path: "/",
         maxAge: 7 * 24 * 60 * 60 * 1000,
+        domain: undefined,
       });
 
       console.log("Redirecting to:", `${BASE_URL}`); // Debug log
