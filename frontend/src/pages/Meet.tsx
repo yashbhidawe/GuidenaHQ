@@ -9,14 +9,15 @@ const Meet = () => {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Smooth transition after component mounts
     const timer = setTimeout(() => setIsReady(true), 100);
     return () => clearTimeout(timer);
   }, []);
 
+  if (!roomName) {
+    return <div className="text-red-500">Room name is required</div>;
+  }
   return (
     <div className="relative h-screen w-full bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden">
-      {/* Loading Overlay */}
       <div
         className={`absolute inset-0 z-50 flex items-center justify-center bg-white/95 backdrop-blur-sm transition-all duration-700 ease-in-out ${
           isLoading ? "opacity-100 visible" : "opacity-0 invisible"

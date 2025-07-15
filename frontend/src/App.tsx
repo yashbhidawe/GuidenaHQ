@@ -29,7 +29,7 @@ const AppRouters = () => {
           <Route path="/profile/:userID" element={<Profile />} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/chat/:receiverId" element={<Chat />} />
-          <Route path="/meet/:receiverId" element={<Meet />} />
+          <Route path="/meet/:roomName" element={<Meet />} />
           <Route path="/meetings" element={<Meetings />} />
           <Route path="/mentorships" element={<Mentorships />} />
           <Route path="/guidena-ai" element={<GuidenaAI />} />
