@@ -120,7 +120,9 @@ const FeedCard: FC<FeedCardProps> = ({
                   </Badge>
                 )}
               </div>
-              <p className="text-gray-500 text-sm mt-1">{experience}</p>
+              <p className="text-gray-500 text-sm mt-1">
+                {experience} Years of experience
+              </p>
             </div>
           </div>
         </Link>

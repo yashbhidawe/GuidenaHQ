@@ -121,7 +121,8 @@ const Profile = () => {
               <div>
                 <h3 className="text-lg font-semibold mb-2">Experience</h3>
                 <p className="text-gray-700">
-                  {user.experience || "No experience information provided"}
+                  {user.experience + " " + "years of experience" ||
+                    "No experience information provided"}
                 </p>
               </div>
             </div>
