@@ -17,6 +17,7 @@ import { BASE_URL } from "@/utils/constants";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "react-toastify";
+import { setupAxiosInterceptors } from "@/utils/axios";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
@@ -29,9 +30,9 @@ const Auth = () => {
 
     if (token) {
       localStorage.setItem("token", token);
-
+      // Re-setup axios interceptors after token is stored
+      setupAxiosInterceptors();
       window.history.replaceState({}, document.title, window.location.pathname);
-
       toast.success("Successfully logged in with Google!");
     }
 
@@ -42,13 +43,10 @@ const Auth = () => {
       } else if (error === "auth_processing_failed") {
         errorMessage = "Authentication processing failed. Please try again.";
       }
-
       toast.error(errorMessage);
-
       window.history.replaceState({}, document.title, window.location.pathname);
     }
   }, []);
-
   const handleGoogleLogin = () => {
     setIsLoading(true);
     try {
