@@ -18,6 +18,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "react-toastify";
 import { setupAxiosInterceptors } from "@/utils/axios";
+import { tokenManager } from "@/utils/tokenManager";
 
 const Auth = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
@@ -29,8 +30,10 @@ const Auth = () => {
     const error = urlParams.get("error");
 
     if (token) {
+      console.log("Google login successful, token received:", token);
+      tokenManager.setToken(token); // This automatically sets up axios interceptors
       localStorage.setItem("token", token);
-      // Re-setup axios interceptors after token is stored
+
       setupAxiosInterceptors();
       window.history.replaceState({}, document.title, window.location.pathname);
       toast.success("Successfully logged in with Google!");

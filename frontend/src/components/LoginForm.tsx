@@ -2,6 +2,7 @@
 
 import { addUser } from "@/store/slices/userSlice";
 import { BASE_URL } from "@/utils/constants";
+import { tokenManager } from "@/utils/tokenManager";
 import axios from "axios";
 import React from "react";
 import { useDispatch } from "react-redux";
@@ -35,8 +36,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
 
       if (response.status === 200) {
         toast.success("Logged in successfully");
-
-        localStorage.setItem("token", response.data.token);
+        tokenManager.setToken(response.data.token);
 
         dispatch(addUser(response.data.data));
         localStorage.setItem(

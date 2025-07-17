@@ -15,8 +15,6 @@ import Mentorships from "./pages/Mentorships";
 import NotFound from "./pages/NotFound";
 import GuidenaAI from "./pages/GuidenaAI";
 import Landing from "./pages/Landing";
-import { useEffect } from "react";
-import { setupAxiosInterceptors } from "./utils/axios";
 
 const AppRouters = () => {
   return (
@@ -57,9 +55,6 @@ const AppRouters = () => {
   );
 };
 const App = () => {
-  useEffect(() => {
-    setupAxiosInterceptors();
-  }, []);
   return (
     <Provider store={appStore}>
       <AppRouters />
