@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import SignupForm from "@/components/SingupForm";
 import LoginForm from "@/components/LoginForm";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,7 @@ import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
 import { Sparkles, ArrowRight } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
-// import { BASE_URL } from "@/utils/constants";
+import { BASE_URL } from "@/utils/constants";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { toast } from "react-toastify";
@@ -22,18 +22,42 @@ const Auth = () => {
   const [isSignUp, setIsSignUp] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get("token");
+    const error = urlParams.get("error");
+
+    if (token) {
+      localStorage.setItem("token", token);
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+
+      toast.success("Successfully logged in with Google!");
+    }
+
+    if (error) {
+      let errorMessage = "Login failed. Please try again.";
+      if (error === "auth_failed") {
+        errorMessage = "Google authentication failed. Please try again.";
+      } else if (error === "auth_processing_failed") {
+        errorMessage = "Authentication processing failed. Please try again.";
+      }
+
+      toast.error(errorMessage);
+
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   const handleGoogleLogin = () => {
-    toast.error(
-      "Google login is currently disabled. Please use email login for now."
-    );
-    // setIsLoading(true);
-    // try {
-    //   window.location.href = `${BASE_URL}/google`;
-    //   setIsLoading(false);
-    // } catch (error) {
-    //   console.error("Google login failed:", error);
-    //   setIsLoading(false);
-    // }
+    setIsLoading(true);
+    try {
+      window.location.href = `${BASE_URL}/google`;
+    } catch (error) {
+      console.error("Google login failed:", error);
+      toast.error("Failed to initiate Google login. Please try again.");
+      setIsLoading(false);
+    }
   };
 
   return (
