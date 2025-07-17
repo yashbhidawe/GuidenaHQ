@@ -20,10 +20,10 @@ const Body = () => {
       try {
         const token = localStorage.getItem("token");
 
-        // if (!token) {
-        //   navigate("/landing");
-        //   return;
-        // }
+        if (!token) {
+          navigate("/landing");
+          return;
+        }
 
         const res = await axios.get(`${BASE_URL}/profile`, {
           headers: {
@@ -44,8 +44,9 @@ const Body = () => {
         navigate("/landing");
       }
     };
+    const timer = setTimeout(fetchUser, 1000);
 
-    fetchUser();
+    return () => clearTimeout(timer);
   }, [dispatch, navigate]);
 
   return (
