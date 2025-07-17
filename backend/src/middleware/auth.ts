@@ -10,13 +10,19 @@ const authMiddleware = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
-    const token = req.cookies?.token;
+    const authHeader = req.headers.authorization;
 
-    if (!token) {
-      console.log("token not found");
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      console.log("Authorization header not found or invalid format");
+      res.status(401).json({
+        message: "Access denied. No token provided.",
+      });
+      return;
     }
+
+    const token = authHeader.substring(7);
 
     const jwtSecret = process.env.JWT_SECRET;
     if (!jwtSecret) {
@@ -36,9 +42,18 @@ const authMiddleware = async (
     next();
   } catch (error) {
     console.error("Auth middleware error:", error);
-    const errorMessage =
-      error instanceof Error ? error.message : "Unauthorized";
+    let errorMessage = "Unauthorized";
+
+    if (error instanceof jwt.JsonWebTokenError) {
+      errorMessage = "Invalid token";
+    } else if (error instanceof jwt.TokenExpiredError) {
+      errorMessage = "Token expired";
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+
     res.status(401).json({ message: errorMessage });
+    return;
   }
 };
 

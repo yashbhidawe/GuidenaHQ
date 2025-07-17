@@ -1,7 +1,9 @@
 //SingupFrom.tsx
+import { addUser } from "@/store/slices/userSlice";
 import { BASE_URL } from "@/utils/constants";
 import axios from "axios";
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
 interface SignupFormProps {
@@ -59,6 +61,8 @@ const SignupForm: React.FC<SignupFormProps> = ({
     }
   };
 
+  const dispatch = useDispatch();
+
   //   const removeImage = () => {
   //   setSignUpFormData((prev) => ({
   //     ...prev,
@@ -76,6 +80,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
         !signUpFormData.password
       ) {
         console.log("Please fill in all fields");
+        toast.error("Please fill in all fields");
         return;
       }
       setIsLoading(true);
@@ -96,34 +101,42 @@ const SignupForm: React.FC<SignupFormProps> = ({
         JSON.stringify(signUpFormData.skillsWanted)
       );
 
-      // Add profile picture if it exists
       if (signUpFormData.avatar) {
         formData.append("avatar", signUpFormData.avatar);
       }
+
       const response = await axios.post(`${BASE_URL}/signup`, formData, {
-        withCredentials: true,
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
+
       if (response.status === 200) {
         toast.success("User created successfully");
-      }
 
-      setIsSignUp(false);
-      setIsLoading(false);
-      setSignUpFormData({
-        firstName: "",
-        lastName: "",
-        email: "",
-        role: "both",
-        experience: "",
-        password: "",
-        previewUrl: "",
-        avatar: null,
-        skillsOffered: [],
-        skillsWanted: [],
-      });
+        localStorage.setItem("token", response.data.token);
+
+        dispatch(addUser(response.data.data));
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify(response.data.data)
+        );
+
+        setIsSignUp(false);
+        setIsLoading(false);
+        setSignUpFormData({
+          firstName: "",
+          lastName: "",
+          email: "",
+          role: "both",
+          experience: "",
+          password: "",
+          previewUrl: "",
+          avatar: null,
+          skillsOffered: [],
+          skillsWanted: [],
+        });
+      }
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";

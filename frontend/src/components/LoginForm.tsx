@@ -20,6 +20,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const handleLogin = async (e: React.FormEvent) => {
     try {
       e.preventDefault();
@@ -30,22 +31,29 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
         return;
       }
 
-      const response = await axios.post(`${BASE_URL}/login`, loginFormData, {
-        withCredentials: true,
-      });
+      const response = await axios.post(`${BASE_URL}/login`, loginFormData);
+
       if (response.status === 200) {
         toast.success("Logged in successfully");
-      }
 
-      dispatch(addUser(response.data.data));
-      localStorage.setItem("loggedInUser", JSON.stringify(response.data.data));
-      setIsLoading(false);
-      setLoginFormData({ email: "", password: "" });
-      navigate("/");
+        localStorage.setItem("token", response.data.token);
+
+        dispatch(addUser(response.data.data));
+        localStorage.setItem(
+          "loggedInUser",
+          JSON.stringify(response.data.data)
+        );
+
+        setIsLoading(false);
+        setLoginFormData({ email: "", password: "" });
+        navigate("/");
+      }
     } catch (error) {
+      setIsLoading(false);
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";
       console.log(errorMessage);
+      toast.error(errorMessage);
     }
   };
   return (
