@@ -40,8 +40,15 @@ const Auth = () => {
       localStorage.setItem("token", token);
 
       setupAxiosInterceptors();
-      window.history.replaceState({}, document.title, window.location.pathname);
-      toast.success("Successfully logged in with Google!");
+
+      setTimeout(() => {
+        window.history.replaceState(
+          {},
+          document.title,
+          window.location.pathname
+        );
+        toast.success("Successfully logged in with Google!");
+      }, 500);
     }
 
     if (error) {
