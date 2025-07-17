@@ -1,6 +1,7 @@
 //SingupFrom.tsx
 import { addUser } from "@/store/slices/userSlice";
 import { BASE_URL } from "@/utils/constants";
+import { tokenManager } from "@/utils/tokenManager";
 import axios from "axios";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -114,8 +115,7 @@ const SignupForm: React.FC<SignupFormProps> = ({
       if (response.status === 200) {
         toast.success("User created successfully");
 
-        localStorage.setItem("token", response.data.token);
-
+        tokenManager.setToken(response.data.token);
         dispatch(addUser(response.data.data));
         localStorage.setItem(
           "loggedInUser",
