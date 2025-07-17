@@ -122,7 +122,6 @@ feedRouter.get(
         })),
       };
 
-      // console.log("Combined Feed:", combinedFeed);
       res.status(200).json({
         message: "Your personalized feed for mentoring and learning",
         data: combinedFeed,

@@ -44,13 +44,11 @@ chatRouter.get(
         select: "firstName lastName avatar",
       });
       if (!chat) {
-        console.log("Chat not found, creating a new one");
         chat = await Chat.create({
           participants: [userId, receiverId],
           messages: [],
           firstName: req.user?.firstName,
         });
-        console.log("New chat created:", chat);
         await chat.save();
       }
       res.status(200).json({

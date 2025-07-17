@@ -80,7 +80,7 @@ mentorshipRouter.post(
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Something went wrong";
-      console.log(errorMessage);
+      console.error(errorMessage);
       res.status(401).json({ message: errorMessage });
     }
   })
@@ -133,11 +133,6 @@ mentorshipRouter.post(
   "/mentorship/request/review/:status/:requestId",
   authMiddleware,
   createAuthHandler(async (req: AuthenticatedRequest, res) => {
-    console.log("Route hit:", {
-      status: req.params.status,
-      requestId: req.params.requestId,
-      user: req.user?._id,
-    });
     try {
       const loggedInUser = req.user;
       if (!loggedInUser) {

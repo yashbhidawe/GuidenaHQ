@@ -73,7 +73,6 @@ authRouter.post("/signup", upload.single("avatar"), async (req, res) => {
         });
         return;
       }
-      console.log("ProfileURL", profilePictureUrl);
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
@@ -174,8 +173,7 @@ authRouter.get(
   createAuthHandler(async (req: AuthenticatedRequest, res) => {
     try {
       const token = req.user.getJWT();
-      console.log("Generated token for redirect:", token);
-      console.log("Redirecting to:", `${BASE_URL}?token=${token}`);
+
       res.redirect(`${BASE_URL}?token=${token}`);
     } catch (error) {
       console.error("Google auth callback error:", error);
