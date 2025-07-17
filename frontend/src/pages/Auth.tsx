@@ -29,14 +29,8 @@ const Auth = () => {
     const token = urlParams.get("token");
     const error = urlParams.get("error");
 
-    console.log("URL params:", urlParams.toString());
-    console.log("Token from URL:", token);
-    console.log("Error from URL:", error);
-
     if (token) {
-      console.log("about to set tokens:", token);
-
-      tokenManager.setToken(token); // This automatically sets up axios interceptors
+      tokenManager.setToken(token);
       localStorage.setItem("token", token);
 
       setupAxiosInterceptors();

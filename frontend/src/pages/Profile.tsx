@@ -42,7 +42,6 @@ const Profile = () => {
           error.response?.data?.message || "Failed to fetch profile";
         toast.error(errorMsg);
 
-        // Handle authentication errors
         if (error.response?.status === 401) {
           toast.error("Please log in to view profiles");
           navigate("/auth");
@@ -60,7 +59,7 @@ const Profile = () => {
     if (userID) {
       getUserProfile();
     }
-  }, [userID]); // Re-fetch when userID changes
+  }, [userID]);
 
   const handleEditProfile = () => {
     navigate("/profile/edit");

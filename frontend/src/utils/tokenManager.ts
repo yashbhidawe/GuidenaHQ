@@ -1,4 +1,3 @@
-// tokenManager.ts
 import axios, {
   AxiosError,
   AxiosResponse,
@@ -20,7 +19,6 @@ class TokenManager {
   setToken(token: string): void {
     this.token = token;
     localStorage.setItem("token", token);
-    // Force axios to use the new token immediately
     this.setupAxiosInterceptors();
   }
 
