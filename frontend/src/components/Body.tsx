@@ -1,13 +1,13 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constants";
 import { addUser } from "@/store/slices/userSlice";
 import { useEffect } from "react";
 import { RootState } from "../store/appStore";
+import { tokenManager } from "@/utils/tokenManager";
 
 const Body = () => {
   const dispatch = useDispatch();
@@ -18,11 +18,19 @@ const Body = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const token = localStorage.getItem("token");
+        let token = localStorage.getItem("token");
 
         if (!token) {
-          navigate("/landing");
-          return;
+          const urlParams = new URLSearchParams(window.location.search);
+          const tokenFromUrl = urlParams.get("token");
+
+          if (tokenFromUrl) {
+            token = tokenFromUrl;
+            tokenManager.setToken(tokenFromUrl);
+          } else {
+            navigate("/landing");
+            return;
+          }
         }
 
         const res = await axios.get(`${BASE_URL}/profile`, {
@@ -44,8 +52,8 @@ const Body = () => {
         navigate("/landing");
       }
     };
-    const timer = setTimeout(fetchUser, 1000);
 
+    const timer = setTimeout(fetchUser, 1000);
     return () => clearTimeout(timer);
   }, [dispatch, navigate]);
 
