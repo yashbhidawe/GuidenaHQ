@@ -29,8 +29,13 @@ const Auth = () => {
     const token = urlParams.get("token");
     const error = urlParams.get("error");
 
+    console.log("URL params:", urlParams.toString());
+    console.log("Token from URL:", token);
+    console.log("Error from URL:", error);
+
     if (token) {
-      console.log("Google login successful, token received:", token);
+      console.log("about to set tokens:", token);
+
       tokenManager.setToken(token); // This automatically sets up axios interceptors
       localStorage.setItem("token", token);
 

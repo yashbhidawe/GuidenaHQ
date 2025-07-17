@@ -15,6 +15,8 @@ import Mentorships from "./pages/Mentorships";
 import NotFound from "./pages/NotFound";
 import GuidenaAI from "./pages/GuidenaAI";
 import Landing from "./pages/Landing";
+import { useEffect } from "react";
+import { tokenManager } from "./utils/tokenManager";
 
 const AppRouters = () => {
   return (
@@ -55,6 +57,9 @@ const AppRouters = () => {
   );
 };
 const App = () => {
+  useEffect(() => {
+    console.log("App mounted, initial token:", tokenManager.getToken());
+  }, []);
   return (
     <Provider store={appStore}>
       <AppRouters />
