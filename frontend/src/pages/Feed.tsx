@@ -1,7 +1,6 @@
 import { BASE_URL } from "@/utils/constants";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
 import FeedCard from "../components/FeedCard";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent } from "@/components/ui/card";
@@ -67,7 +66,7 @@ const Feed = () => {
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";
-      toast.error(errorMessage);
+      console.error(errorMessage);
     } finally {
       setLoading(false);
     }

@@ -141,7 +141,6 @@ const SignupForm: React.FC<SignupFormProps> = ({
       const errorMessage =
         error instanceof Error ? error.message : "Unauthorized";
       console.log(errorMessage);
-      toast.error(errorMessage);
       setIsLoading(false);
     }
   };

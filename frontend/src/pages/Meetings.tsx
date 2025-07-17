@@ -33,7 +33,6 @@ const Meetings = () => {
       });
       setMeetings(response.data);
     } catch (error) {
-      toast.error("Failed to fetch meetings");
       console.error("Fetch meetings error:", error);
     } finally {
       setIsLoading(false);
