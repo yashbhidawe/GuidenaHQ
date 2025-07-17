@@ -53,8 +53,7 @@ const Body = () => {
       }
     };
 
-    const timer = setTimeout(fetchUser, 1000);
-    return () => clearTimeout(timer);
+    fetchUser();
   }, [dispatch, navigate]);
 
   return (
