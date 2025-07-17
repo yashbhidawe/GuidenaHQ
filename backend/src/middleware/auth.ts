@@ -13,10 +13,8 @@ const authMiddleware = async (
 ): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
-    console.log("Authorization header:", authHeader);
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      console.log("Authorization header not found or invalid format");
       res.status(401).json({
         message: "Access denied. No token provided.",
       });
