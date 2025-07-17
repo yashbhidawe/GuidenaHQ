@@ -19,19 +19,39 @@ import { RootState } from "@/store/appStore";
 const Navbar = () => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
+  const user = useSelector((appStore: RootState) => appStore.user?.data);
+
   const handleLogout = async () => {
     try {
       setIsLoggingOut(true);
-      await axios.post(`${BASE_URL}/logout`, {}, { withCredentials: true });
+
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        await axios.post(
+          `${BASE_URL}/logout`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+      }
+
+      localStorage.removeItem("token");
       localStorage.removeItem("loggedInUser");
-      window.location.href = "/";
+
+      window.location.href = "/landing";
     } catch (error) {
       console.error("Logout failed:", error);
+
+      localStorage.removeItem("token");
+      localStorage.removeItem("loggedInUser");
+
       setIsLoggingOut(false);
     }
   };
-
-  const user = useSelector((appStore: RootState) => appStore.user?.data);
 
   return (
     <nav className="bg-deep-teal border-b border-deep-teal/20 sticky top-0 z-50">

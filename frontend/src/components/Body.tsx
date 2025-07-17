@@ -12,16 +12,25 @@ import { RootState } from "../store/appStore";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const location = useLocation();
 
   useSelector((appStore: RootState) => appStore.user);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          navigate("/landing");
+          return;
+        }
+
         const res = await axios.get(`${BASE_URL}/profile`, {
-          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
+
         dispatch(addUser(res.data));
       } catch (error) {
         if (axios.isAxiosError(error)) {
@@ -29,6 +38,9 @@ const Body = () => {
             error.response?.data?.message || "Failed to fetch user data"
           );
         }
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("loggedInUser");
         navigate("/landing");
       }
     };
