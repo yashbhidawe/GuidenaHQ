@@ -41,14 +41,8 @@ const Auth = () => {
 
       setupAxiosInterceptors();
 
-      setTimeout(() => {
-        window.history.replaceState(
-          {},
-          document.title,
-          window.location.pathname
-        );
-        toast.success("Successfully logged in with Google!");
-      }, 500);
+      window.history.replaceState({}, document.title, window.location.pathname);
+      toast.success("Successfully logged in with Google!");
     }
 
     if (error) {
