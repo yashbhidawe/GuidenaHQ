@@ -139,8 +139,11 @@ const SignupForm: React.FC<SignupFormProps> = ({
       }
     } catch (error) {
       const errorMessage =
-        error instanceof Error ? error.message : "Unauthorized";
+        axios.isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : "Signup failed. Please try again.";
       console.log(errorMessage);
+      toast.error(errorMessage);
       setIsLoading(false);
     }
   };

@@ -51,7 +51,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ isLoading, setIsLoading }) => {
     } catch (error) {
       setIsLoading(false);
       const errorMessage =
-        error instanceof Error ? error.message : "Unauthorized";
+        axios.isAxiosError(error) && error.response?.data?.message
+          ? error.response.data.message
+          : "Login failed. Please try again.";
       console.log(errorMessage);
       toast.error(errorMessage);
     }

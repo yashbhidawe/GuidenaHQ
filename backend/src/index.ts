@@ -12,7 +12,7 @@ import authRouter from "./routes/authRouter";
 import feedRouter from "./routes/feedRouter";
 import mentroshipRouter from "./routes/mentorshipRouter";
 import searchRouter from "./routes/searchRouter";
-import { BASE_URL } from "./utils/constants";
+import { ALLOWED_ORIGIN } from "./utils/constants";
 import { initializeSocket } from "./utils/socket";
 import chatRouter from "./routes/chatRouter";
 import meetingRouter from "./routes/meetingRouter";
@@ -27,7 +27,14 @@ const server = http.createServer(app);
 app.use(express.json());
 
 app.use(cookieParser());
-app.use(cors({ origin: BASE_URL, credentials: true }));
+app.use(
+  cors({
+    origin: ALLOWED_ORIGIN,
+    credentials: true,
+  })
+);
+
+app.use(passport.initialize());
 
 connectDB();
 
@@ -39,8 +46,6 @@ app.use("/", mentroshipRouter);
 app.use("/", meetingRouter);
 app.use("/", searchRouter);
 app.use("/", aiRouter);
-
-app.use(passport.initialize());
 
 initializeSocket(server);
 server.listen(PORT, () => {

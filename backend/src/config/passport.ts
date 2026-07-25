@@ -18,7 +18,7 @@ passport.use(
       accessToken: string,
       refreshToken: string,
       profile: Profile,
-      done: VerifyCallback
+      done: VerifyCallback,
     ) => {
       try {
         const user = await User.findOne({
@@ -43,6 +43,6 @@ passport.use(
       } catch (error) {
         return done(error);
       }
-    }
-  )
+    },
+  ),
 );
