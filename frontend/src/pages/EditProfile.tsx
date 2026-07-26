@@ -232,9 +232,12 @@ const EditProfile: React.FC = () => {
                 <Input
                   id="experience"
                   name="experience"
+                  type="number"
+                  min="0"
+                  max="100"
                   value={formData.experience}
                   onChange={handleChange}
-                  placeholder="Years of experience or expertise level"
+                  placeholder="Years of experience"
                   className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
                 />
               </div>
