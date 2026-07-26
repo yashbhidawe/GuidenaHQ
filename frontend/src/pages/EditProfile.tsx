@@ -61,6 +61,9 @@ const EditProfile: React.FC = () => {
     if ((name === "firstName" || name === "lastName") && /\d/.test(value)) {
       return;
     }
+    if (name === "experience" && (/[^\d]/.test(value) || Number(value) > 60)) {
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -234,7 +237,7 @@ const EditProfile: React.FC = () => {
                   name="experience"
                   type="number"
                   min="0"
-                  max="100"
+                  max="60"
                   value={formData.experience}
                   onChange={handleChange}
                   placeholder="Years of experience"

@@ -283,14 +283,17 @@ const SignupForm: React.FC<SignupFormProps> = ({
             id="signup-experience"
             type="number"
             min="0"
+            max="60"
             step="1"
             value={signUpFormData.experience}
-            onChange={(e) =>
+            onChange={(e) => {
+              const val = e.target.value;
+              if (/[^\d]/.test(val) || Number(val) > 60) return;
               setSignUpFormData({
                 ...signUpFormData,
-                experience: e.target.value,
-              })
-            }
+                experience: val,
+              });
+            }}
             placeholder="0"
             className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
           />
