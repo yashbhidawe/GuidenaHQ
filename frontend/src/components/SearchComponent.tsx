@@ -30,6 +30,7 @@ const SearchComponent = () => {
   const [error, setError] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
 
   const debouncedQuery = useDebounce(searchQuery, 400);
@@ -68,7 +69,12 @@ const SearchComponent = () => {
 
   useEffect(() => {
     function handleClick(e: MouseEvent) {
-      if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+      if (
+        inputRef.current &&
+        !inputRef.current.contains(e.target as Node) &&
+        dropdownRef.current &&
+        !dropdownRef.current.contains(e.target as Node)
+      ) {
         setShowDropdown(false);
       }
     }
@@ -104,7 +110,7 @@ const SearchComponent = () => {
       </div>
 
       {showDropdown && (result.length > 0 || error) && (
-        <div className="absolute z-20 mt-2 w-full bg-white border border-medium-teal rounded-xl shadow-xl max-h-80 overflow-y-auto">
+        <div ref={dropdownRef} className="absolute z-20 mt-2 w-full bg-white border border-medium-teal rounded-xl shadow-xl max-h-80 overflow-y-auto">
           {error ? (
             <div className="p-4 text-center text-deep-teal">{error}</div>
           ) : (
