@@ -67,6 +67,7 @@ const Footer = () => {
                     <li key={link.path}>
                       <Link
                         to={link.path}
+                        onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                         className="flex items-center space-x-2 text-[#b3d9d9] hover:text-[#5fb3b3] transition-colors duration-200 text-sm"
                       >
                         <IconComponent className="w-4 h-4" />
