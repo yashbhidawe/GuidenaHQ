@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "./ui/input";
 import { Search } from "lucide-react";
 import axios from "axios";
@@ -8,7 +9,6 @@ interface User {
   lastName: string;
   firstName: string;
   _id: string;
-  name: string;
   skillsOffered: string[];
   skillsWanted: string[];
 }
@@ -30,6 +30,7 @@ const SearchComponent = () => {
   const [error, setError] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const debouncedQuery = useDebounce(searchQuery, 400);
 
@@ -112,8 +113,9 @@ const SearchComponent = () => {
                 key={user._id}
                 className="p-4 border-b border-light-teal last:border-b-0 hover:bg-light-teal/60 cursor-pointer transition"
                 onClick={() => {
-                  setSearchQuery(user.firstName);
                   setShowDropdown(false);
+                  setSearchQuery("");
+                  navigate(`/profile/${user._id}`);
                 }}
               >
                 <div className="font-bold text-deep-teal">
