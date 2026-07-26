@@ -28,6 +28,9 @@ export const validateSignupData = (req: Request) => {
       "First name should be atleast 3 characters long and at max 50 characters long"
     );
   }
+  if (/\d/.test(firstName) || /\d/.test(lastName)) {
+    throw new Error("Name should not contain numbers");
+  }
   if (skillsOffered.length < 1 || skillsOffered.length > 10) {
     throw new Error("Skills offered should be between 1 and 10 skills");
   }
@@ -51,5 +54,11 @@ export const validateEditProfileData = (req: AuthenticatedRequest) => {
   const isEditAllowed = Object.keys(req.body).every((field) =>
     allowedEdits.includes(field)
   );
-  return isEditAllowed;
+  if (!isEditAllowed) return false;
+
+  const { firstName, lastName } = req.body;
+  if (firstName && /\d/.test(firstName)) return false;
+  if (lastName && /\d/.test(lastName)) return false;
+
+  return true;
 };

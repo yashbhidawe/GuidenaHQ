@@ -164,13 +164,16 @@ const SignupForm: React.FC<SignupFormProps> = ({
               id="signup-name"
               type="text"
               value={signUpFormData.firstName}
-              onChange={(e) =>
+              onChange={(e) => {
+                if (/\d/.test(e.target.value)) return;
                 setSignUpFormData({
                   ...signUpFormData,
                   firstName: e.target.value,
-                })
-              }
+                });
+              }}
               placeholder="Enter your first name"
+              pattern="[A-Za-z\s]+"
+              title="First name should only contain letters"
               className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
             />
           </span>
@@ -186,13 +189,16 @@ const SignupForm: React.FC<SignupFormProps> = ({
               id="signup-name"
               type="text"
               value={signUpFormData.lastName}
-              onChange={(e) =>
+              onChange={(e) => {
+                if (/\d/.test(e.target.value)) return;
                 setSignUpFormData({
                   ...signUpFormData,
                   lastName: e.target.value,
-                })
-              }
-              placeholder="Enter your first name"
+                });
+              }}
+              placeholder="Enter your last name"
+              pattern="[A-Za-z\s]+"
+              title="Last name should only contain letters"
               className="w-full px-4 py-3 rounded-md border border-slate-300 focus:outline-none focus:ring-2 focus:ring-teal-600 text-slate-700"
             />
           </span>

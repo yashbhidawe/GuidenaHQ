@@ -58,6 +58,9 @@ const EditProfile: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    if ((name === "firstName" || name === "lastName") && /\d/.test(value)) {
+      return;
+    }
     setFormData((prev) => ({
       ...prev,
       [name]: value,
@@ -180,6 +183,8 @@ const EditProfile: React.FC = () => {
                     value={formData.firstName}
                     onChange={handleChange}
                     placeholder="Enter first name"
+                    pattern="[A-Za-z\s]+"
+                    title="First name should only contain letters"
                     className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
                   />
                 </div>
@@ -196,6 +201,8 @@ const EditProfile: React.FC = () => {
                     value={formData.lastName}
                     onChange={handleChange}
                     placeholder="Enter last name"
+                    pattern="[A-Za-z\s]+"
+                    title="Last name should only contain letters"
                     className="border-light-teal focus:border-medium-teal focus:ring-medium-teal"
                   />
                 </div>
