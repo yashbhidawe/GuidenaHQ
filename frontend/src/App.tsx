@@ -23,10 +23,12 @@ import ContactUs from "./pages/ContactUs";
 import Status from "./pages/Status";
 import APIReference from "./pages/APIReference";
 import Careers from "./pages/Careers";
+import ScrollToTopOnNav from "./components/ScrollToTopOnNav";
 
 const AppRouters = () => {
   return (
     <BrowserRouter>
+      <ScrollToTopOnNav />
       <Routes>
         <Route path="/landing" element={<Landing />} />
 
