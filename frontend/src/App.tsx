@@ -20,6 +20,9 @@ import CommunityGuidelines from "./pages/CommunityGuidelines";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import ContactUs from "./pages/ContactUs";
+import Status from "./pages/Status";
+import APIReference from "./pages/APIReference";
+import Careers from "./pages/Careers";
 
 const AppRouters = () => {
   return (
@@ -43,6 +46,9 @@ const AppRouters = () => {
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
           <Route path="/contact" element={<ContactUs />} />
+          <Route path="/status" element={<Status />} />
+          <Route path="/api" element={<APIReference />} />
+          <Route path="/careers" element={<Careers />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

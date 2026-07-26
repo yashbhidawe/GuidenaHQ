@@ -157,24 +157,24 @@ const Footer = () => {
               © {currentYear} Guidena. All rights reserved.
             </div>
             <div className="flex items-center space-x-6 text-sm">
-              <a
-                href="#"
+              <Link
+                to="/status"
                 className="text-[#b3d9d9] hover:text-[#5fb3b3] transition-colors duration-200"
               >
                 Status
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/api"
                 className="text-[#b3d9d9] hover:text-[#5fb3b3] transition-colors duration-200"
               >
                 API
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                to="/careers"
                 className="text-[#b3d9d9] hover:text-[#5fb3b3] transition-colors duration-200"
               >
                 Careers
-              </a>
+              </Link>
               <div className="flex items-center space-x-1 text-[#b3d9d9]">
                 <span>Made with</span>
                 <Heart className="w-4 h-4 text-red-400 fill-current" />
