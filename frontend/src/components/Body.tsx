@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import ScrollToTop from "./ScrollToTop";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { BASE_URL } from "@/utils/constants";
@@ -61,6 +62,7 @@ const Body = () => {
       <Navbar />
       <Outlet />
       <Footer />
+      <ScrollToTop />
     </>
   );
 };
