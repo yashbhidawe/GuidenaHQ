@@ -15,6 +15,11 @@ import Mentorships from "./pages/Mentorships";
 import NotFound from "./pages/NotFound";
 import GuidenaAI from "./pages/GuidenaAI";
 import Landing from "./pages/Landing";
+import HelpCenter from "./pages/HelpCenter";
+import CommunityGuidelines from "./pages/CommunityGuidelines";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
+import ContactUs from "./pages/ContactUs";
 
 const AppRouters = () => {
   return (
@@ -33,6 +38,11 @@ const AppRouters = () => {
           <Route path="/meetings" element={<Meetings />} />
           <Route path="/mentorships" element={<Mentorships />} />
           <Route path="/guidena-ai" element={<GuidenaAI />} />
+          <Route path="/help" element={<HelpCenter />} />
+          <Route path="/community" element={<CommunityGuidelines />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/contact" element={<ContactUs />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
