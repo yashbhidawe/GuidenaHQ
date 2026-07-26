@@ -12,11 +12,12 @@ searchRouter.get("/search/:query", authMiddleware, async (req, res) => {
       return;
     }
 
-    const query = req.params.query;
+    const query = req.params.query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
     const searchResults = await User.find({
       $or: [
         { firstName: { $regex: query, $options: "i" } },
+        { lastName: { $regex: query, $options: "i" } },
         { skillsOffered: { $regex: query, $options: "i" } },
         { skillsWanted: { $regex: query, $options: "i" } },
       ],
